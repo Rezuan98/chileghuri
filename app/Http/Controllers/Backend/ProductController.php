@@ -96,7 +96,7 @@ public function store(Request $request)
         'colors.*' => 'required|exists:colors,id',
         'sizes.*' => 'required|exists:sizes,id',
         'stock_quantity.*' => 'required|numeric|min:0',
-        'variant_price.*' => 'required|numeric|min:0',
+        
     ]);
 
     $productImage = null; // Initialize the variable
@@ -146,7 +146,7 @@ public function store(Request $request)
         $variant->color_id = $colorId;
         $variant->size_id = $sizes[$key];
         $variant->stock_quantity = $stocks[$key];
-        $variant->variant_price = $prices[$key];
+       
         $variant->sku = $product->product_code . '-' . $colorId . '-' . $sizes[$key];
         $variant->status = true;
         $variant->save();
