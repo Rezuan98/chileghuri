@@ -8,7 +8,7 @@ use App\Models\Product;
 use App\Models\ProductVarient;
 use App\Models\GalleryImage;
 use App\Models\Category;
-use App\Models\SubCategory;
+use App\Models\Subcategory;
 use App\Models\Brand;
 
 class ProductViewController extends Controller

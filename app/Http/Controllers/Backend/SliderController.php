@@ -136,46 +136,7 @@ public function store(Request $request)
         return view('back-end.slider.edit', compact('slider'));
     }
 
-    // public function update(Request $request, $id)
-    // {
-    //     $request->validate([
-    //         'title' => 'nullable|string|max:255',
-    //         'subtitle' => 'nullable|string|max:255',
-    //         'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-    //         'link' => 'nullable|url|max:255',
-    //         'order' => 'nullable|integer|min:0'
-    //     ]);
-
-    //     try {
-    //         $slider = Slider::findOrFail($id);
-
-    //         if ($request->hasFile('image')) {
-    //             // Delete old image
-    //             if ($slider->image && file_exists(public_path('uploads/sliders/' . $slider->image))) {
-    //                 unlink(public_path('uploads/sliders/' . $slider->image));
-    //             }
-
-    //             // Upload new image
-    //             $image = $request->file('image');
-    //             $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-    //             $image->move(public_path('uploads/sliders'), $filename);
-    //             $slider->image = $filename;
-    //         }
-
-    //         $slider->title = $request->title;
-    //         $slider->subtitle = $request->subtitle;
-    //         $slider->link = $request->link;
-    //         $slider->order = $request->order ?? $slider->order;
-    //         $slider->save();
-
-    //         Toastr::success('Slider updated successfully!');
-    //         return redirect()->route('sliders.index');
-
-    //     } catch (\Exception $e) {
-    //         Toastr::error('Failed to update slider: ' . $e->getMessage());
-    //         return redirect()->back()->withInput();
-    //     }
-    // }
+   
 
     public function destroy($id)
     {
