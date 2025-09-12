@@ -35,6 +35,7 @@ use App\Http\Controllers\Backend\{
     DeliveryChargeController,
     VideoSectionController,
     PopupController,
+    ReviewController
     
 };
 
@@ -71,7 +72,7 @@ Route::get('/about/us', [InfoController::class,'aboutUs'])->name('about.us');
 
 
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
-
+Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
 Route::get('/cart/index', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
 Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
@@ -183,9 +184,21 @@ require __DIR__.'/auth.php';
 
 // backend routes
 
+// Frontend routes
+Route::get('/reviews', [App\Http\Controllers\IndexController::class, 'reviews'])->name('reviews.index');
+// Route::get('/review/{id}', [App\Http\Controllers\IndexController::class, 'singleReview'])->name('review.single');
+
+Route::group(['middleware' => ['auth', 'admin']], function() {
+    Route::get('/review', [ReviewController::class, 'index'])->name('review.index');
+    Route::get('/review/create', [ReviewController::class, 'create'])->name('review.create');
+    Route::post('/review/store', [ReviewController::class, 'store'])->name('review.store');
+    Route::get('/review/edit/{id}', [ReviewController::class, 'edit'])->name('review.edit');
+    Route::post('/review/update/{id}', [ReviewController::class, 'update'])->name('review.update');
+    Route::get('/review/delete/{id}', [ReviewController::class, 'delete'])->name('review.delete');
+    Route::post('/review/update-status', [ReviewController::class, 'updateStatus'])->name('review.updateStatus');
 
 
-
+});
 
 
 
@@ -296,6 +309,9 @@ Route::group(['prefix'=>"order",'as'=>'order.'], function(){
     Route::post('/update', [OrderManageController::class, 'update'])->name('update');
     Route::get('/delete/{id}', [OrderManageController::class, 'delete'])->name('delete');
     Route::post('/update-status', [OrderManageController::class, 'updateStatus'])->name('updateStatus');
+    // Add this route in web.php
+Route::post('/admin/orders/bulk-update-status', [OrderManageController::class, 'bulkUpdateStatus'])->name('bulkUpdateStatus');
+Route::post('/admin/orders/bulk-update-payment', [OrderManageController::class, 'bulkUpdatePayment'])->name('bulkUpdatePayment');
     Route::get('/invoice/{id}', [OrderManageController::class, 'invoice'])->name('invoice');
     Route::get('/download-pdf/{id}', [OrderManageController::class, 'downloadPDF'])->name('download-pdf');
     Route::post('/update-payment-status', [OrderController::class, 'updatePaymentStatus'])->name('updatePaymentStatus');

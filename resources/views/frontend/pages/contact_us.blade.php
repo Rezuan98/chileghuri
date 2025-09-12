@@ -3,124 +3,86 @@
 
 @push('ecomcss')
 <style>
-/* Hero Section */
-.contact-hero {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    margin-top: 50px;
+/* Page background */
+.contact-page {
+    background: #f5f6f8; /* light gray */
+    padding: 40px 0;
 }
 
-/* Custom shape blobs */
-.shape-blob1,
-.shape-blob2 {
-    position: absolute;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
+/* Card shells */
+.card-neutral {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
 }
 
-.shape-blob1 {
-    width: 200px;
-    height: 200px;
-    top: -100px;
-    right: -100px;
-    animation: blob-float 8s infinite ease-in-out;
+/* Section title */
+.section-title {
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 1rem;
+    padding: 30px;
 }
 
-.shape-blob2 {
-    width: 300px;
-    height: 300px;
-    bottom: -150px;
-    left: -150px;
-    animation: blob-float 12s infinite ease-in-out reverse;
-}
-
-/* Icon wrapper styles */
-.icon-wrapper {
-    width: 60px;
-    height: 60px;
-    background: rgba(102, 126, 234, 0.1);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    color: #667eea;
-    font-size: 24px;
-}
-
-/* Animations */
-@keyframes blob-float {
-    0%, 100% {
-        transform: translate(0, 0);
-    }
-    50% {
-        transform: translate(20px, 20px);
-    }
-}
-
-/* Hover effects */
-.contact-card {
-    transition: transform 0.3s ease;
-    border: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.contact-card:hover {
-    transform: translateY(-5px);
-}
-
-.btn-primary {
-    background: #667eea;
-    border-color: #667eea;
-    transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-    background: #5a6fd8;
-    border-color: #5a6fd8;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-}
-
-/* Form styling */
-.form-control:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
-}
-
-.form-floating > label {
+/* Subtle description */
+.section-subtitle {
     color: #6c757d;
+    margin-bottom: 1.5rem;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .contact-hero {
-        padding: 3rem 0;
-    }
-    
-    .shape-blob1,
-    .shape-blob2 {
-        display: none;
-    }
-    
-    .contact-form-wrapper,
-    .map-wrapper {
-        padding: 1.5rem !important;
-    }
+/* Buttons – neutral/dark gray */
+.btn-neutral {
+    background: #000;
+    border-color: #343a40;
+    color: #ffffff;
+    transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+}
+.btn-neutral:hover {
+    background: #2c3136;
+    border-color: #2c3136;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
 }
 
-/* Map wrapper responsive height */
-@media (min-width: 992px) {
-    .map-wrapper {
-        height: 100%;
-        min-height: 500px;
-    }
+/* Inputs */
+.form-control, .form-select, .form-floating > .form-control {
+    border-color: #dde1e6;
+}
+.form-control:focus {
+    border-color: #c2c7cf;
+    box-shadow: 0 0 0 0.2rem rgba(120, 130, 140, 0.15);
+}
+.form-floating > label { color: #6c757d; }
+
+/* Map */
+.map-wrapper {
+    height: 100%;
+    min-height: 520px;
+    overflow: hidden;
+}
+.map-wrapper iframe {
+    border-radius: 10px;
 }
 
+/* Spacing tweaks */
 @media (max-width: 991px) {
-    .map-wrapper {
-        height: 400px;
-    }
+    .map-wrapper { min-height: 360px; }
 }
+/* Map: fill parent, equal height with form */
+.map-card { 
+  min-height: clamp(360px, 55vh, 640px); /* mobile → desktop */
+  display: flex;
+  flex-direction: column;
+}
+.map-frame {
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 10px;
+}
+
 </style>
 @endpush
 
@@ -136,7 +98,6 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
 
-        // Show loading state
         submitBtn.disabled = true;
         buttonText.textContent = 'Sending...';
         spinner.classList.remove('d-none');
@@ -148,30 +109,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'X-Requested-With': 'XMLHttpRequest'
                 },
-                body: JSON.stringify(Object.fromEntries(formData))
+                body: formData,
+                credentials: 'same-origin'
             });
 
             const data = await response.json();
-            
+
             const toastElement = document.querySelector('.toast-body');
             const toastContainer = document.getElementById('messageToast');
-            
-            // Reset toast classes
             toastContainer.classList.remove('bg-success', 'bg-danger', 'text-white');
-            
+
             if (data.success) {
-                // Success handling
                 toastElement.textContent = data.message;
                 toastContainer.classList.add('bg-success', 'text-white');
                 form.reset();
-                // Remove validation classes
                 form.querySelectorAll('.is-valid, .is-invalid').forEach(el => {
                     el.classList.remove('is-valid', 'is-invalid');
                 });
             } else {
-                // Error handling
                 toastElement.textContent = data.message || 'Please check your input and try again.';
                 toastContainer.classList.add('bg-danger', 'text-white');
             }
@@ -181,20 +138,20 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error:', error);
             const toastContainer = document.getElementById('messageToast');
             toastContainer.classList.remove('bg-success', 'bg-danger', 'text-white');
-            document.querySelector('.toast-body').textContent = 'An error occurred. Please try again.';
+            document.querySelector('.toast-body').innerHTML = 'An error occurred. Please try again.';
             toastContainer.classList.add('bg-danger', 'text-white');
             toast.show();
         } finally {
-            // Reset button state
             submitBtn.disabled = false;
             buttonText.textContent = 'Send Message';
             spinner.classList.add('d-none');
         }
     });
 
-    // Form validation
+    // Live validation
     Array.from(form.elements).forEach(element => {
         element.addEventListener('input', function() {
+            if (this.type === 'button' || this.type === 'submit') return;
             if (this.checkValidity()) {
                 this.classList.remove('is-invalid');
                 this.classList.add('is-valid');
@@ -205,80 +162,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-</script> 
+</script>
 @endpush
 
 @section('contents')
-<!-- Hero Section -->
-<section class="contact-hero position-relative overflow-hidden text-white py-5">
-    <div class="shape-blob1"></div>
-    <div class="shape-blob2"></div>
-    <div class="container py-5">
-        <div class="row justify-content-center text-center">
-            <div class="col-lg-8 position-relative">
-                <h1 class="display-4 fw-bold mb-4">Get In Touch</h1>
-                <p class="lead mb-0">Have questions about our products or need assistance? We're here to help and answer any question you might have.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Contact Info Cards -->
-<section class="contact-info position-relative">
+<section class="contact-page">
     <div class="container">
-        <div class="row g-4 mt-n5">
-            <!-- Address Card -->
-            <div class="col-md-4">
-                <div class="contact-card h-100 bg-white rounded-3 shadow-sm p-4 text-center">
-                    <div class="icon-wrapper mb-3">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <h5>Our Location</h5>
-                    <p class="mb-0">{{ $settings->address }}</p>
-                </div>
-            </div>
-            
-            <!-- Phone Card -->
-            <div class="col-md-4">
-                <div class="contact-card h-100 bg-white rounded-3 shadow-sm p-4 text-center">
-                    <div class="icon-wrapper mb-3">
-                        <i class="fas fa-phone"></i>
-                    </div>
-                    <h5>Phone Number</h5>
-                    <p class="mb-0">
-                        <a href="tel:{{ $settings->phone }}" class="text-decoration-none">{{ $settings->phone }}</a>
-                    </p>
-                </div>
-            </div>
-            
-            <!-- Email Card -->
-            <div class="col-md-4">
-                <div class="contact-card h-100 bg-white rounded-3 shadow-sm p-4 text-center">
-                    <div class="icon-wrapper mb-3">
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                    <h5>Email Address</h5>
-                    <p class="mb-0">
-                        <a href="mailto:{{ $settings->email }}" class="text-decoration-none">{{ $settings->email }}</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Contact Form Section -->
-<section class="contact-form-section py-5">
-    <div class="container py-4">
-        <div class="row g-5">
-            <!-- Contact Form -->
+        <div class="row g-4 align-items-stretch">
+            <!-- Form -->
             <div class="col-lg-7">
-                <div class="contact-form-wrapper bg-white rounded-3 shadow-sm p-4 p-lg-5">
-                    <h3 class="mb-4">Send us a Message</h3>
+                <div class="card-neutral p-4 p-lg-5 h-100">
+                    <h2 class="section-title">Contact Us</h2>
+                    <p class="section-subtitle mb-4">Send us a message and our team will get back to you shortly.</p>
+
                     <form id="contactForm" class="needs-validation" novalidate>
                         @csrf
                         <div class="row g-3">
-                            <!-- Name -->
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
@@ -286,8 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <div class="invalid-feedback">Please enter your name</div>
                                 </div>
                             </div>
-                    
-                            <!-- Email -->
+
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="email" class="form-control" id="email" name="email" placeholder="Your Email" required>
@@ -295,8 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <div class="invalid-feedback">Please enter a valid email</div>
                                 </div>
                             </div>
-                    
-                            <!-- Phone -->
+
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="tel" class="form-control" id="phone" name="phone" placeholder="Your Phone" required>
@@ -304,8 +201,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <div class="invalid-feedback">Please enter your phone number</div>
                                 </div>
                             </div>
-                    
-                            <!-- Subject -->
+
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject" required>
@@ -313,19 +209,17 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <div class="invalid-feedback">Please enter a subject</div>
                                 </div>
                             </div>
-                    
-                            <!-- Message -->
+
                             <div class="col-12">
                                 <div class="form-floating">
-                                    <textarea class="form-control" id="message" name="message" style="height: 150px" placeholder="Message" required></textarea>
+                                    <textarea class="form-control" id="message" name="message" style="height: 160px" placeholder="Message" required></textarea>
                                     <label for="message">Message</label>
                                     <div class="invalid-feedback">Please enter your message</div>
                                 </div>
                             </div>
-                    
-                            <!-- Submit Button -->
+
                             <div class="col-12">
-                                <button type="submit" class="btn btn-primary px-5 py-3 rounded-pill" id="submitBtn">
+                                <button type="submit" class="btn btn-neutral px-5 py-3 rounded-pill" id="submitBtn">
                                     <span class="button-text">Send Message</span>
                                     <span class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
                                 </button>
@@ -334,25 +228,26 @@ document.addEventListener('DOMContentLoaded', function() {
                     </form>
                 </div>
             </div>
-            
+
             <!-- Map -->
             <div class="col-lg-5">
-                <div class="map-wrapper bg-white rounded-3 shadow-sm p-3 h-100">
-                    <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d233668.38703692693!2d90.27923991057244!3d23.780573258035957!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b8b087026b81%3A0x8fa563bbdd5904c2!2sDhaka!5e0!3m2!1sen!2sbd!4v1642432267610!5m2!1sen!2sbd"
-                        class="w-100 h-100 rounded"
-                        style="border:0;"
-                        allowfullscreen=""
-                        loading="lazy">
-                    </iframe>
-                </div>
-            </div>
+  <div class="card-neutral p-3 map-card">
+    <iframe
+      class="map-frame"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d58393.91445465884!2d90.3193534919322!3d23.83212042511309!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c124b21679e3%3A0x48d7e114b00a18cb!2sPallabi%2C%20Dhaka!5e0!3m2!1sen!2sbd!4v1757555825128!5m2!1sen!2sbd"
+      allowfullscreen
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+</div>
+
         </div>
     </div>
 </section>
 
-<!-- Toast Notification -->
-<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+<!-- Toast -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
     <div id="messageToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
             <strong class="me-auto">chileghuri</strong>
@@ -361,5 +256,4 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="toast-body"></div>
     </div>
 </div>
-
 @endsection

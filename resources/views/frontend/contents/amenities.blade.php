@@ -34,3 +34,30 @@
     </div>
     
 </section>
+
+<style>
+    /* Centering content */
+.home_delivery,
+.trends,
+.quality,
+.caring_support {
+    padding: 20px 10px;
+    text-align: center;
+}
+
+h4 {
+    margin-top: 15px; /* Spacing between icon and title */
+    font-weight: 600; /* Bold text */
+}
+
+p {
+    font-size: 14px; /* Slightly smaller muted text */
+}
+
+/* end style for amenities part */
+
+.amenities {
+    background-color: #cc7fac;
+}
+
+</style>

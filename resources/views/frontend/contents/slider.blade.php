@@ -49,6 +49,9 @@
    
     /* height: 400px; */
 }
+/* .carousel-item {
+    height: 400px;
+} */
 
 .slidercontainer .carousel-control-prev,
 .slidercontainer .carousel-control-next {
@@ -86,7 +89,9 @@
   .slider-container{
     height: 100%;
   }
-
+/* .carousel-item {
+    height: 150px;
+} */
   .slidercontainer .carousel-control-prev,
 .slidercontainer .carousel-control-next {
     opacity: 1;

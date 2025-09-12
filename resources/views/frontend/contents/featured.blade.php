@@ -1,8 +1,8 @@
 <section id="featured-products-section" class="featured-products">
-    <div class="container mt-2">
-       <div class="section-header">
-  <span class="section-title">Featured Products</span>
-</div>
+    <div class="container-fluid mt-2">
+        <div class="featured-header">
+            <h3 class="featured-title">Featured Products</h3>
+        </div>
 
         <div class="row">
             <div class="col-lg-12">
@@ -24,13 +24,23 @@
                             }
                         }
                     ?>
-                    <div class="col-md-2-4 col-lg-2-4">
+                    <div class="col-md-3 col-lg-3 mt-4">
                         <div class="featured-box">
                             <div class="featured-image">
                                 <a href="{{ route('product.details', $product->id) }}">
                                     <img class="primary-image" src="{{ asset('uploads/products/' . $product->product_image) }}" alt="{{ $product->product_name }}">
+                                {{-- Out of Stock Badge --}}
+        @if($product->variants_sum_stock_quantity == 0)
+            <div class="out-of-stock-band">Out of Stock</div>
+        @endif
+                                
+                                    @if($product->galleryImages->isNotEmpty())
+        <img class="hover-image" src="{{ asset('uploads/gallery/' . $product->galleryImages->first()->image) }}" alt="{{ $product->product_name }}">
+        @endif
                                 </a>
-                                <button onclick="addToCartFromFeatured(
+
+@if($product->variants_sum_stock_quantity > 0)
+  <button onclick="addToCartFromFeatured(
                                     {{ $product->id }},
                                     {{ $product->variants->first()->id }},
                                     {{ $final_price }},
@@ -41,6 +51,12 @@
                                 )" class="plus-btn" title="Add to Cart">
                                     <i class="fas fa-plus"></i>
                                 </button>
+@else
+  <button  class="plus-btn" title="Add to Cart" >
+    <i class="fas fa-plus"></i>
+  </button>
+@endif
+
                             </div>
 
                             <div class="fp-product-info">
@@ -52,13 +68,15 @@
                                     </p>
 
                                     {{-- Only show discount pricing if there's actually a discount --}}
-                                    @if($discount_amount > 0 && $final_price < $sale_price)
-                                    <div class="fp-price-row d-flex">
-                                        <span class="fp-current-price">৳{{ $final_price }}</span>
-                                        <span class="original-product-price">৳{{ $sale_price }}</span>
+                                   @if($discount_amount > 0 && $final_price < $sale_price)
+                                    <div class="fp-price-row d-flex justify-content-between">
+                                        <span class="fp-current-price">TK{{ $final_price }}</span>
+                                        <span style="font-size: 10px;">({{ $product->variants_sum_stock_quantity }} Instock)</span>
+                                        <span class="original-product-price">TK{{ $sale_price }}</span>
                                     </div>
                                     @else
-                                    <span class="fp-current-price">৳{{ $sale_price }}</span>
+                                    <span class="fp-current-price">TK{{ $sale_price }}</span>
+                                    <span style="font-size: 10px;">({{ $product->variants_sum_stock_quantity }} Instock)</span>
                                     @endif
                                 </div>
                             </div>
@@ -135,50 +153,24 @@
     }
 </script>
 @endpush
+
 @push('ecomcss')
+
 <style>
-.section-header {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 50px 0;
+.featured-header {
+    margin-bottom: 15px;
+    margin-top:15px;
 }
 
-.section-header::before,
-.section-header::after {
-  content: "";
-  flex: 1;
-  border-bottom: 1px solid #8c7d7d;
+.featured-title {
+    font-family:"Conthic", sans-serif; font-weight:400;
+    font-size: 30px;
+    color: #666;
+    text-align: left;
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    width: 100%;
 }
-
-.section-title {
-  font-family: "Faculty Glyphic", serif;
-  font-size: 1.2rem;
-  font-weight: 700;
-  padding: 0 20px;
-  color: #f2f2f2; /* Or use var(--primary-color) */
-  letter-spacing: 1px;
-  white-space: nowrap;
-  border: 1px solid #987777;
-  padding: 6px 20px;
-  background-color: #9a0000;
-}
-
-
-    @media (max-width: 776px) {
-    .section-title {
-        padding: 5px;
-        font-family:"Faculty Glyphic", serif;
-        margin: 0px 0;
-        font-size: 12px;
-    }
-
-    .section-header {
- 
-  margin: 0 0;
-}
-}
-
 </style>
-    
 @endpush

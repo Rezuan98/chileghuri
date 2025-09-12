@@ -354,16 +354,29 @@ public function updateVarientStatus(Request $request)
 }
 
 public function deleteGalleryImage($id){
+    try {
+        $galleryImage = GalleryImage::findOrFail($id);
+        
+        // Delete the physical file
+        $imagePath = public_path('uploads/gallery/' . $galleryImage->image);
+        if (file_exists($imagePath)) {
+            unlink($imagePath);
+        }
+        
+        // Delete database record
+        $galleryImage->delete();
 
-    GalleryImage::where('id',$id)->delete();
-
-    return response()->json([
-        'success' => true,
-        'message' => 'Image Deleted successfully!'
-    ]);
-
-
-
+        return response()->json([
+            'success' => true,
+            'message' => 'Image Deleted successfully!'
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to delete image: ' . $e->getMessage()
+        ], 500);
+    }
 }
 
 

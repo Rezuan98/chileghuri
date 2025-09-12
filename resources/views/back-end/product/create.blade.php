@@ -177,7 +177,7 @@
                                             <div class="mb-3 row">
                                                 <label class="col-sm-4 col-form-label">Subcategory</label>
                                                 <div class="col-sm-8">
-                                                    <select name="subcategory_id" id="subcategory"
+                                                    <select name="subcategory_id" id="subcategory" required
                                                         class="form-select form-control">
                                                         <option value="">Select Subcategory</option>
                                                     </select>
@@ -377,7 +377,8 @@
 
                                 <div class="col-sm-12">
                                     <label class="col-sm-12 col-form-label"> Product Description</label>
-                                    <textarea id="summernote" name="description" class="form-control">{{ old('description') }}</textarea>
+                                    <div id="quill-editor" style="height: 300px;"></div>
+<textarea name="description" id="description" style="display:none;">{{ old('description') }}</textarea>
                                 </div>
                             </div>
 
@@ -475,7 +476,26 @@
         </div>
     </div>
 
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script>
+var quill = new Quill('#quill-editor', {
+  theme: 'snow',
+  modules: {
+    toolbar: [
+      [{ 'header': [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      ['link', 'image'],
+      ['clean']
+    ]
+  }
+});
 
+// Sync content to textarea
+quill.on('text-change', function() {
+  document.getElementById('description').value = quill.root.innerHTML;
+});
+</script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

@@ -108,8 +108,8 @@ $purchaseData = [
 
 @push('ecomjs')
 <script>
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push(@json($purchaseData, JSON_UNESCAPED_UNICODE));
+    // window.dataLayer = window.dataLayer || [];
+    // window.dataLayer.push(@json($purchaseData, JSON_UNESCAPED_UNICODE));
 
 </script>
 @endpush

@@ -23,10 +23,12 @@
 
 
 <section id="new-arrivals-section" class="new-arrivals-products">
-    <div class="container">
-        <div class="section-header">
-  <span class="section-title">New Arrival Products</span>
-</div>
+    <div class="container-fluid">
+          <header class="arrival-section-header v2">
+  {{-- <span class="eyebrow">Featured</span> --}}
+  <h2 class="arrival-section-title">New Arrival Products</h2>
+  {{-- <a href="{{ route('home') }}#featured" class="section-cta">View all</a> --}}
+</header>
         <div class="row">
             <div class="col-lg-12">
                <div class="row">
@@ -48,16 +50,24 @@
         }
     ?>
    
-    <div class="col-md-2-4 col-lg-2-4">
+    <div class="col-md-3 col-lg-3">
         <div class="new-arrival-box">
             <div class="new-arrival-image">
                 <a href="{{ route('product.details',$product->id) }}">
                     <img class="primary-image" src="{{ asset('uploads/products/' . $product->product_image) }}" alt="{{ $product->name }}">
+                   
+                   @if($product->variants_sum_stock_quantity == 0)
+            <div class="out-of-stock-band">Out of Stock</div>
+        @endif
+                   
                     @if($product->galleryImages->isNotEmpty())
                     <img class="hover-image" src="{{ asset('uploads/gallery/' . $product->galleryImages->first()->image) }}" alt="{{ $product->name }}">
                     @endif
                 </a>
-                <button onclick="addToCartFromNewArrivals(
+
+
+@if($product->variants_sum_stock_quantity > 0)
+ <button onclick="addToCartFromNewArrivals(
                     {{ $product->id }},
                     {{ $product->variants->first()->id?? '' }},
                     {{ $final_price }},
@@ -68,6 +78,17 @@
                 )" class="plus-btn" title="Add to Cart">
                     <i class="fas fa-plus"></i>
                 </button>
+@else
+  <button  class="plus-btn" title="Add to Cart" >
+    <i class="fas fa-plus"></i>
+  </button>
+@endif
+
+
+
+
+
+               
             </div>
 
             <div class="nap-product-info">
@@ -77,14 +98,17 @@
                     </a>
                     
                     {{-- Only show discount pricing if there's actually a discount --}}
-                    @if($discount_amount > 0 && $final_price < $sale_price)
-                    <div class="nap-price-row d-flex">
-                        <span class="nap-current-price">৳{{ $final_price }}</span>
-                        <span class="original-product-price">৳{{ $product->sale_price }}</span>
-                    </div>
-                    @else
-                    <span class="nap-current-price">৳{{ $sale_price }}</span>
-                    @endif
+                   @if($discount_amount > 0 && $final_price < $sale_price)
+                                    <div class="fp-price-row d-flex justify-content-between">
+
+                                        <span class="fp-current-price">TK{{ $final_price }}</span>
+                                        <span style="font-size: 10px;">({{ $product->variants_sum_stock_quantity }} Instock)</span>
+                                        <span class="original-product-price">TK{{ $sale_price }}</span>
+                                    </div>
+                                    @else
+                                    <span class="fp-current-price">TK{{ $sale_price }}</span>
+                                    <span style="font-size: 10px;">({{ $product->variants_sum_stock_quantity }} Instock)</span>
+                                    @endif
                 </div>
             </div>
         </div>
@@ -152,27 +176,27 @@
 
 
                 // ✅ Fire add_to_cart event dynamically
-                window.dataLayer = window.dataLayer || [];
-                window.dataLayer.push({
-                    event: 'add_to_cart'
-                    , ecommerce: {
-                        currency: 'BDT'
-                        , value: price
-                        , items: [{
-                            item_id: productId
-                            , item_name: productName
-                            , price: price
-                            , quantity: 1
-                            , item_category: categoryName
-                            , item_brand: brandName
-                            , item_variant: productCode
-                        }]
-                    }
-                });
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
+        //         window.dataLayer = window.dataLayer || [];
+        //         window.dataLayer.push({
+        //             event: 'add_to_cart'
+        //             , ecommerce: {
+        //                 currency: 'BDT'
+        //                 , value: price
+        //                 , items: [{
+        //                     item_id: productId
+        //                     , item_name: productName
+        //                     , price: price
+        //                     , quantity: 1
+        //                     , item_category: categoryName
+        //                     , item_brand: brandName
+        //                     , item_variant: productCode
+        //                 }]
+        //             }
+        //         });
+        //     }
+        // } catch (error) {
+        //     console.error('Error:', error);
+        // }
 
 
 
@@ -182,13 +206,36 @@
 
 
 
+         }
+    } catch (error) {
+        console.error('Error:', error);
     }
-    // }
-    // catch (error) {
-    //     console.error('Error:', error);
-    // }
-    // }
+}
+
 
 </script>
 
+@endpush
+
+
+@push('ecomcss')
+<style>
+.arrival-section-header {
+    margin-bottom: 15px;
+    margin-top:15px;
+}
+
+.arrival-section-title {
+    font-family:"Conthic", sans-serif; font-weight:400;
+    font-size: 30px;
+    color: #666;
+    font-weight: bold;
+    text-align: left;
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    width: 100%;
+}
+</style>
+    
 @endpush

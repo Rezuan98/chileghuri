@@ -114,7 +114,7 @@ Site Settings
 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>YouTube URL</label>
+                                        <label>Tiktok</label>
                                         <input type="url" name="youtube_url" class="form-control" value="{{ $settings->youtube_url }}">
                                     </div>
                                 </div>

@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="{{ asset('/') }}back-end/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Daterange picker -->
     <link rel="stylesheet" href="{{ asset('/') }}back-end/plugins/daterangepicker/daterangepicker.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
 
 
@@ -646,7 +647,12 @@
     </a>
 </li>
 
-
+<li class="nav-item">
+    <a href="{{ route('review.index') }}" class="nav-link {{ Request::is('admin/review*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-star"></i>
+        <p>Customer Reviews</p>
+    </a>
+</li>
 
                         <li class="nav-item">
                             <a href="#" class="nav-link">

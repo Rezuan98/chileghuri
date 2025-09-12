@@ -30,6 +30,10 @@ class Product extends Model
 
 
     // Define relationships
+     public function getTotalStockAttribute()
+    {
+        return $this->variants->sum('stock_quantity');
+    }
     public function category()
     {
         return $this->belongsTo(Category::class);

@@ -77,185 +77,190 @@ class ProductViewController extends Controller
     }
     
 
-     public function categoryProducts(Request $request, $id)
-    {
-        // Get category information
-        $category = Category::findOrFail($id);
+ public function categoryProducts(Request $request, $id)
+{
+    $category = Category::findOrFail($id);
+    $categoryName = $category->name;
+   
+    // Start with base query
+    $query = Product::with(['variants', 'brand', 'category', 'galleryImages'])
+        ->where('category_id', $id)
+        ->where('status', 1);
+ 
+    // Add stock quantity sum to the query
+    $query->withSum('variants', 'stock_quantity');
+
+    // Apply price filters
+    if ($request->filled('min_price')) {
+        $query->where('sale_price', '>=', $request->min_price);
+    }
+    
+    if ($request->filled('max_price')) {
+        $query->where('sale_price', '<=', $request->max_price);
+    }
+
+    // Apply color filters
+    if ($request->filled('colors')) {
+        $colors = explode(',', $request->colors);
+        $query->whereHas('variants', function($q) use ($colors) {
+            $q->whereIn('color_id', $colors);
+        });
+    }
+
+    // Apply size filters
+    if ($request->filled('sizes')) {
+        $sizes = explode(',', $request->sizes);
+        $query->whereHas('variants', function($q) use ($sizes) {
+            $q->whereIn('size_id', $sizes);
+        });
+    }
+
+    // Apply brand filters
+    if ($request->filled('brands')) {
+        $brands = explode(',', $request->brands);
+        $query->whereIn('brand_id', $brands);
+    }
+
+    // Apply stock filters
+    if ($request->filled('in_stock')) {
+        $query->whereHas('variants', function($q) {
+            $q->where('stock_quantity', '>', 0);
+        });
+    }
+
+    if ($request->filled('out_of_stock')) {
+        $query->whereHas('variants', function($q) {
+            $q->where('stock_quantity', '<=', 0);
+        });
+    }
+
+    // Apply sorting
+    switch ($request->get('sort', 'newest')) {
+        case 'price_low':
+            $query->orderBy('sale_price', 'asc');
+            break;
+        case 'price_high':
+            $query->orderBy('sale_price', 'desc');
+            break;
+        case 'popular':
+            $query->orderBy('created_at', 'desc');
+            break;
+        case 'newest':
+        default:
+            $query->orderBy('created_at', 'desc');
+            break;
+    }
+
+    $product = $query->paginate(20);
+
+    // Handle AJAX requests
+    if ($request->ajax()) {
+        $html = view('frontend.pages.category_product_partial', ['product' => $product])->render();
         
-        // Start with base query
-        $query = Product::with(['category', 'galleryImages', 'variants.size', 'variants.color', 'brand'])
-                       ->where('category_id', $id)
-                       ->where('status', 1) // Only active products
-                       ->distinct();
-
-        // Apply price filter if provided
-        if ($request->filled('min_price') || $request->filled('max_price')) {
-            $minPrice = $request->get('min_price', 0);
-            $maxPrice = $request->get('max_price', 999999);
-            
-            // Calculate final price including discounts
-            $query->where(function($q) use ($minPrice, $maxPrice) {
-                $q->whereRaw("
-                    CASE 
-                        WHEN discount_amount > 0 AND discount_type = 'fixed' THEN 
-                            (sale_price - discount_amount) BETWEEN ? AND ?
-                        WHEN discount_amount > 0 AND discount_type = 'percentage' THEN 
-                            (sale_price - (sale_price * discount_amount / 100)) BETWEEN ? AND ?
-                        ELSE 
-                            sale_price BETWEEN ? AND ?
-                    END
-                ", [$minPrice, $maxPrice, $minPrice, $maxPrice, $minPrice, $maxPrice]);
-            });
-        }
-
-        // Apply availability filter
-        if ($request->filled('in_stock') && $request->filled('out_of_stock')) {
-            // Both selected - show all products
-        } elseif ($request->filled('in_stock')) {
-            // Only in stock
-            $query->whereHas('variants', function($q) {
-                $q->where('stock_quantity', '>', 0);
-            });
-        } elseif ($request->filled('out_of_stock')) {
-            // Only out of stock
-            $query->whereDoesntHave('variants', function($q) {
-                $q->where('stock_quantity', '>', 0);
-            });
-        }
-
-        // Apply sorting
-        $sort = $request->get('sort', 'newest');
-        switch ($sort) {
-            case 'price_low':
-                $query->orderByRaw("
-                    CASE 
-                        WHEN discount_amount > 0 AND discount_type = 'fixed' THEN 
-                            (sale_price - discount_amount)
-                        WHEN discount_amount > 0 AND discount_type = 'percentage' THEN 
-                            (sale_price - (sale_price * discount_amount / 100))
-                        ELSE 
-                            sale_price
-                    END ASC
-                ");
-                break;
-            case 'price_high':
-                $query->orderByRaw("
-                    CASE 
-                        WHEN discount_amount > 0 AND discount_type = 'fixed' THEN 
-                            (sale_price - discount_amount)
-                        WHEN discount_amount > 0 AND discount_type = 'percentage' THEN 
-                            (sale_price - (sale_price * discount_amount / 100))
-                        ELSE 
-                            sale_price
-                    END DESC
-                ");
-                break;
-            case 'popular':
-                // You can implement this based on sales count, views, etc.
-                $query->withCount('orderItems')->orderBy('order_items_count', 'desc');
-                break;
-            case 'newest':
-            default:
-                $query->latest('created_at');
-                break;
-        }
-
-        // Get total count before pagination for results info
-        $totalProducts = $query->count();
-
-        // Paginate results
-        $product = $query->paginate(12)->withQueryString();
-
-        // If this is an AJAX request, return only the partial view
-        if ($request->ajax() || $request->header('X-Requested-With') === 'XMLHttpRequest') {
-            return view('frontend.pages.category_product_page', [
-                'product' => $product,
-                'id' => $id,
-                'category' => $category,
-                'categoryName' => $category->name,
-                'totalProducts' => $totalProducts
-            ]);
-        }
-
-        return view('frontend.pages.category_product_page', [
-            'product' => $product,
-            'id' => $id,
-            'category' => $category,
-            'categoryName' => $category->name,
-            'totalProducts' => $totalProducts
+        return response()->json([
+            'success' => true,
+            'html' => $html,
+            'count' => $product->count(),
+            'total' => $product->total()
         ]);
     }
 
+    return view('frontend.pages.category_product_page', compact('product', 'categoryName', 'id'));
+}
 
- public function subCategoryProducts(Request $request, $id)
-    {
-        $subcategory = Subcategory::findOrFail($id);
+
+public function subCategoryProducts(Request $request, $id)
+{
+    $category = Subcategory::findOrFail($id);
+    $categoryName = $category->name;
+    $mainCategory= $category->category->name;
+    $mainCategoryId=$category->category->id;
+   
+    // Start with base query
+    $query = Product::with(['variants', 'brand', 'category', 'galleryImages'])
+        ->where('category_id', $id)
+        ->where('status', 1);
+ 
+    // Add stock quantity sum to the query
+    $query->withSum('variants', 'stock_quantity');
+
+    // Apply price filters
+    if ($request->filled('min_price')) {
+        $query->where('sale_price', '>=', $request->min_price);
+    }
+    
+    if ($request->filled('max_price')) {
+        $query->where('sale_price', '<=', $request->max_price);
+    }
+
+    // Apply color filters
+    if ($request->filled('colors')) {
+        $colors = explode(',', $request->colors);
+        $query->whereHas('variants', function($q) use ($colors) {
+            $q->whereIn('color_id', $colors);
+        });
+    }
+
+    // Apply size filters
+    if ($request->filled('sizes')) {
+        $sizes = explode(',', $request->sizes);
+        $query->whereHas('variants', function($q) use ($sizes) {
+            $q->whereIn('size_id', $sizes);
+        });
+    }
+
+    // Apply brand filters
+    if ($request->filled('brands')) {
+        $brands = explode(',', $request->brands);
+        $query->whereIn('brand_id', $brands);
+    }
+
+    // Apply stock filters
+    if ($request->filled('in_stock')) {
+        $query->whereHas('variants', function($q) {
+            $q->where('stock_quantity', '>', 0);
+        });
+    }
+
+    if ($request->filled('out_of_stock')) {
+        $query->whereHas('variants', function($q) {
+            $q->where('stock_quantity', '<=', 0);
+        });
+    }
+
+    // Apply sorting
+    switch ($request->get('sort', 'newest')) {
+        case 'price_low':
+            $query->orderBy('sale_price', 'asc');
+            break;
+        case 'price_high':
+            $query->orderBy('sale_price', 'desc');
+            break;
+        case 'popular':
+            $query->orderBy('created_at', 'desc');
+            break;
+        case 'newest':
+        default:
+            $query->orderBy('created_at', 'desc');
+            break;
+    }
+
+    $product = $query->paginate(20);
+
+    // Handle AJAX requests
+    if ($request->ajax()) {
+        $html = view('frontend.pages.category_product_partial', ['product' => $product])->render();
         
-        // Start building the query with eager loading
-        $query = Product::with(['category', 'subcategory', 'brand', 'variants.size', 'variants.color', 'galleryImages'])
-            ->where('subcategory_id', $id)
-            ->where('status', 1);
-
-        // Apply price filter
-        if ($request->filled('min_price') || $request->filled('max_price')) {
-            $minPrice = (float) $request->input('min_price', 0);
-            $maxPrice = (float) $request->input('max_price', 50000);
-            
-            $query->whereBetween('sale_price', [$minPrice, $maxPrice]);
-        }
-
-        // Apply availability filter
-        if ($request->has('in_stock') && !$request->has('out_of_stock')) {
-            $query->whereHas('variants', function($q) {
-                $q->where('stock_quantity', '>', 0);
-            });
-        } elseif ($request->has('out_of_stock') && !$request->has('in_stock')) {
-            $query->whereDoesntHave('variants', function($q) {
-                $q->where('stock_quantity', '>', 0);
-            });
-        }
-
-        // Apply sorting
-        $sort = $request->input('sort', 'newest');
-        switch ($sort) {
-            case 'price_low':
-                $query->orderBy('sale_price', 'asc');
-                break;
-            case 'price_high':
-                $query->orderBy('sale_price', 'desc');
-                break;
-            case 'popular':
-                $query->orderBy('total_sold', 'desc');
-                break;
-            case 'newest':
-            default:
-                $query->orderBy('created_at', 'desc');
-                break;
-        }
-
-        // Paginate results
-        $products = $query->paginate(12)->appends($request->query());
-
-        // Handle AJAX requests
-        if ($request->ajax()) {
-            $html = view('frontend.pages.category_product_partial', [
-                'product' => $products
-            ])->render();
-            
-            return response()->json([
-                'success' => true,
-                'html' => $html,
-                'total' => $products->total(),
-                'count' => $products->count()
-            ]);
-        }
-
-        return view('frontend.pages.category_product_page', [
-            'product' => $products,
-            'id' => $id,
-            'categoryName' => $subcategory->name
+        return response()->json([
+            'success' => true,
+            'html' => $html,
+            'count' => $product->count(),
+            'total' => $product->total()
         ]);
     }
+
+    return view('frontend.pages.category_product_page', compact('product', 'categoryName', 'id','mainCategoryId','mainCategory'));
+}
 
 
 
@@ -264,11 +269,13 @@ public function brandProducts(Request $request, $id)
     // Get brand information
     $brand = Brand::findOrFail($id);
     
-    // Start with base query
+    // Start with base query - ADD selectRaw here
     $query = Product::with(['category', 'galleryImages', 'variants.size', 'variants.color', 'brand'])
+                   ->selectRaw('products.*, (SELECT COALESCE(SUM(stock_quantity), 0) FROM product_varients WHERE product_varients.product_id = products.id) as total_stock')
                    ->where('brand_id', $id)
-                   ->where('status', 1) // Only active products
-                   ->distinct();
+                   ->where('status', 1);
+
+                   
 
     // Apply price filter if provided
     if ($request->filled('min_price') || $request->filled('max_price')) {
@@ -314,11 +321,11 @@ public function brandProducts(Request $request, $id)
         });
     }
 
-    // Apply sorting - Fixed version
+    // Apply sorting
     $sort = $request->get('sort', 'newest');
     switch ($sort) {
         case 'price_low':
-            // Get all products first, then sort by calculated final price
+            // Keep the total_stock when manually sorting
             $products = $query->get()->map(function($product) {
                 $finalPrice = $product->sale_price;
                 
@@ -334,7 +341,7 @@ public function brandProducts(Request $request, $id)
                 return $product;
             })->sortBy('final_price');
             
-            // Convert back to paginated collection
+            // Convert back to paginated collection - preserve total_stock
             $currentPage = $request->get('page', 1);
             $perPage = 12;
             $total = $products->count();
@@ -355,7 +362,7 @@ public function brandProducts(Request $request, $id)
             break;
             
         case 'price_high':
-            // Get all products first, then sort by calculated final price (descending)
+            // Keep the total_stock when manually sorting
             $products = $query->get()->map(function($product) {
                 $finalPrice = $product->sale_price;
                 
@@ -371,7 +378,7 @@ public function brandProducts(Request $request, $id)
                 return $product;
             })->sortByDesc('final_price');
             
-            // Convert back to paginated collection
+            // Convert back to paginated collection - preserve total_stock
             $currentPage = $request->get('page', 1);
             $perPage = 12;
             $total = $products->count();
@@ -392,7 +399,6 @@ public function brandProducts(Request $request, $id)
             break;
             
         case 'popular':
-            // You can implement this based on sales count, views, etc.
             $product = $query->withCount('orderItems')->orderBy('order_items_count', 'desc')->paginate(12)->withQueryString();
             break;
             

@@ -3,9 +3,9 @@
 @if($recommendedProducts->count() > 0)
 <section class="recommended-products-section py-5">
     <div class="container">
-        <div class="section-header text-center mb-4">
-            <h2 class="section-title">You May Also Like</h2>
-            <p class="section-subtitle text-muted">Discover similar products that might interest you</p>
+        <div class="recommended-section-header text-center mb-4">
+            <h2 class="recommended-section-title">You May Also Like</h2>
+            <p class="recommended-section-subtitle text-muted">Discover similar products that might interest you</p>
         </div>
         
         <div class="row g-3">
@@ -33,7 +33,9 @@
                                 <img class="product-main-image" 
                                      src="{{ asset('uploads/products/' . $product->product_image) }}" 
                                      alt="{{ $product->product_name }}">
-                                
+                                @if($product->variants_sum_stock_quantity == 0)
+            <div class="out-of-stock-band">Out of Stock</div>
+        @endif
                                 @if($product->galleryImages->isNotEmpty())
                                     <img class="product-hover-image" 
                                          src="{{ asset('uploads/gallery/' . $product->galleryImages->first()->image) }}" 
@@ -58,18 +60,23 @@
                             @endif
                             
                             {{-- Quick add to cart button --}}
-                            <button onclick="addRecommendedToCart(
-                                event,
-                                {{ $product->id }},
-                                {{ $product->variants->first()->id ?? 0 }},
-                                {{ $final_price }},
-                                '{{ addslashes($product->product_name) }}',
-                                '{{ addslashes($product->brand->name ?? 'No Brand') }}',
-                                '{{ addslashes($product->category->name ?? 'Uncategorized') }}',
-                                '{{ addslashes($product->product_code) }}'
-                            )" class="quick-add-btn" title="Add to Cart">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
+                            @if($product->variants_sum_stock_quantity > 0)
+  <button onclick="addToCartFromFeatured(
+                                    {{ $product->id }},
+                                    {{ $product->variants->first()->id }},
+                                    {{ $final_price }},
+                                    '{{ addslashes($product->product_name) }}',
+                                    '{{ addslashes($product->brand->name ?? 'No Brand') }}',
+                                    '{{ addslashes($product->category->name ?? 'Uncategorized') }}',
+                                    '{{ addslashes($product->product_code) }}'
+                                )" class="plus-btn" title="Add to Cart">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+@else
+  <button  class="plus-btn" title="Add to Cart" >
+    <i class="fas fa-plus"></i>
+  </button>
+@endif
                         </div>
                         
                         <div class="product-info">
@@ -120,14 +127,23 @@
     border-top: 1px solid #e9ecef;
 }
 
-.section-header .section-title {
-    font-size: 2rem;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 0.5rem;
+.recommended-section-header {
+    margin-bottom: 15px;
+    margin-top:15px;
 }
 
-.section-header .section-subtitle {
+.recommended-section-title {
+    font-family:"Conthic", sans-serif; font-weight:400;
+    font-size: 30px;
+    color: #666;
+    text-align: left;
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    width: 100%;
+}
+
+.recommended-section-header .section-subtitle {
     font-size: 1rem;
     margin-bottom: 0;
 }
@@ -387,23 +403,23 @@ async function addRecommendedToCart(event, productId, variantId, price, productN
             clickedButton.style.backgroundColor = '#28a745';
             
             // GTM tracking
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({
-                event: 'add_to_cart',
-                ecommerce: {
-                    currency: 'BDT',
-                    value: price,
-                    items: [{
-                        item_id: productId,
-                        item_name: productName,
-                        price: price,
-                        quantity: 1,
-                        item_category: categoryName,
-                        item_brand: brandName,
-                        item_variant: productCode
-                    }]
-                }
-            });
+            // window.dataLayer = window.dataLayer || [];
+            // window.dataLayer.push({
+            //     event: 'add_to_cart',
+            //     ecommerce: {
+            //         currency: 'BDT',
+            //         value: price,
+            //         items: [{
+            //             item_id: productId,
+            //             item_name: productName,
+            //             price: price,
+            //             quantity: 1,
+            //             item_category: categoryName,
+            //             item_brand: brandName,
+            //             item_variant: productCode
+            //         }]
+            //     }
+            // });
 
             // Show toast notification
             showToast('Product added to cart!', 'success');

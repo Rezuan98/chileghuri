@@ -11,12 +11,14 @@ use App\Models\User;
 use App\Models\GalleryImage;
 use App\Models\Slider;
 use App\Models\Video;
+use App\Models\Review;
 
 class IndexController extends Controller
 {
     public function index(){
 
         $new_arrival = Product::where('status', 1)->where('featured', 0)
+        ->withSum('variants', 'stock_quantity')
         ->with('variants', 'galleryImages')
         ->latest()  // Orders by created_at DESC
         ->take(20)
@@ -32,12 +34,14 @@ class IndexController extends Controller
     ->take(10)
     ->get();
 
-    $featured = Product::where('status', 1)->where('featured', 1)
-   
+    $featured = Product::where('status', 1)
+    ->where('featured', 1)
+    ->withSum('variants', 'stock_quantity')
     ->with(['variants', 'galleryImages'])
-   
     ->take(30)
     ->get();
+
+// Access with: 
 
     
 
@@ -61,10 +65,10 @@ class IndexController extends Controller
         $videos = Video::where('status', true)->first();
 
 
-        
+        $reviews = Review::where('status', 1)->orderBy('order', 'asc')->take(6)->get();
        
         
-        return view('frontend.master.index', compact('new_arrival', 'best_selling','sliders','categoryNames','videos','featured','sliderCategory'));
+        return view('frontend.master.index', compact('new_arrival', 'best_selling','sliders','categoryNames','videos','featured','sliderCategory', 'reviews'));
 
     }
 }

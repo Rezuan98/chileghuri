@@ -311,7 +311,14 @@ public function fetchCartItems()
 
 
 
+public function count()
+{
+    $count = auth()->check()
+        ? \App\Models\Cart::where('user_id', auth()->id())->sum('quantity')
+        : collect(session('cart', []))->sum('quantity');
 
+    return response()->json(['success' => true, 'count' => $count]);
+}
 
 
    

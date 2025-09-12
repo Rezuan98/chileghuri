@@ -141,6 +141,7 @@
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+    border-radius: 5px;
     gap: 1rem;
     padding: 1rem 0;
     margin-top: 50px;
@@ -152,31 +153,33 @@
     font-size: 1.25rem;
     padding: 0 50px;
     color: #f5f5f5;
-}
+    font-family:"Conthic", sans-serif;}
 
 .continue-shopping-btn {
-    border-color: #9A0000;
-    color: #9A0000;
+    border-color: #f5f5f5;
+    color: #f5f5f5;
     white-space: nowrap;
+    margin-right: 10px;
+    font-family: "AloveraDisplay",sans-serif;
 }
 
 .continue-shopping-btn:hover {
-    background-color: #9A0000;
+    background-color: #f5f5f5;
     border-color: #9A0000;
-    color: white;
+    color: #9A0000;
 }
 
 /* Desktop Cart Item */
 .cart-item-card {
     background: white;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.08);
     padding: 1.5rem;
     transition: all 0.3s ease;
 }
 
 .cart-item-card:hover {
-    transform: translateY(-2px);
+    
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
@@ -191,6 +194,7 @@
     font-weight: 600;
     margin-bottom: 0.5rem;
     color: #333;
+    font-family: "AloveraDisplay",sans-serif;
 }
 
 .product-variants {
@@ -203,12 +207,14 @@
 .variant-item {
     font-size: 0.875rem;
     color: #666;
+    font-family: "AloveraDisplay",sans-serif;
 }
 
 .item-price {
     font-weight: 600;
     color: #9A0000;
     font-size: 1rem;
+    font-family: "AloveraDisplay",sans-serif;
 }
 
 .quantity-controls {
@@ -248,6 +254,7 @@
     text-align: center;
     font-weight: 600;
     background: white;
+    font-family: "AloveraDisplay",sans-serif;
 }
 
 .item-total {
@@ -255,6 +262,7 @@
     font-weight: 700;
     color: #333;
     margin-bottom: 0.5rem;
+    font-family: "AloveraDisplay",sans-serif;
 }
 
 .remove-btn {
@@ -266,6 +274,7 @@
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
     transition: all 0.2s ease;
+    font-family: "AloveraDisplay",sans-serif;
 }
 
 .remove-btn:hover {
@@ -305,18 +314,21 @@
     margin-bottom: 0.5rem;
     color: #333;
     line-height: 1.3;
+    font-family: "AloveraDisplay",sans-serif;
 }
 
 .mobile-variants {
     font-size: 0.875rem;
     color: #666;
     margin-bottom: 0.5rem;
+    font-family: "AloveraDisplay",sans-serif;
 }
 
 .mobile-price {
     font-size: 1rem;
     font-weight: 600;
     color: #9A0000;
+    font-family: "AloveraDisplay",sans-serif;
 }
 
 .mobile-remove-btn {
@@ -333,6 +345,7 @@
     cursor: pointer;
     transition: all 0.2s ease;
     flex-shrink: 0;
+    font-family: "AloveraDisplay",sans-serif;
 }
 
 .mobile-remove-btn:hover {
@@ -407,6 +420,7 @@
     font-weight: 700;
     margin-bottom: 1.5rem;
     color: #333;
+    font-family: "AloveraDisplay",sans-serif;
 }
 
 .summary-details {
@@ -418,6 +432,7 @@
     justify-content: space-between;
     margin-bottom: 0.75rem;
     font-size: 1rem;
+    font-family: "AloveraDisplay",sans-serif;
 }
 
 .summary-row:last-child {
@@ -427,6 +442,7 @@
 .total-row {
     font-size: 1.125rem;
     color: #333;
+    font-family: "AloveraDisplay",sans-serif;
 }
 
 .summary-divider {
@@ -436,7 +452,7 @@
 
 .checkout-btn {
     width: 100%;
-    background: #9A0000;
+    background: #4F0808;
     color: white;
     border: none;
     padding: 1rem;

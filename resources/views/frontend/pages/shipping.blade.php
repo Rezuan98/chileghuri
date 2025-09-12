@@ -2,109 +2,77 @@
 @section('keyTitle', 'Shipping Details')
 
 @push('ecomcss')
-    <style>
-        .payment-methods {
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 1rem;
-            background: #fafafa;
-        }
+<style>
+:root{--brand-600:#9A0000;--brand-700:#4f0808;--ink:#0f172a;--muted:#6b7280;--hairline:#e6e8ef;--bg:#ffffff;--bg-soft:#fafafa;--shadow:0 8px 24px rgba(16,24,40,.08);} @media(prefers-color-scheme:dark){:root{--ink:#f3f4f6;--muted:#a1a1aa;--hairline:#2a2a2a;--bg:#0b0b0b;--bg-soft:#0f0f0f;--shadow:0 8px 24px rgba(0,0,0,.35);}}
 
-        .payment-option {
-            display: flex;
-            align-items: center;
-            padding: 0.5rem 0;
-        }
+/* Page layout & cards */
+.card{border:1px solid var(--hairline);border-radius:14px;box-shadow:var(--shadow);background:var(--bg);} 
+.card .card-body{padding:1.25rem 1.25rem;} 
+.container.py-5{scroll-margin-top:24px;} 
 
-        .payment-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            background: #f8f9fa;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1rem;
-            font-size: 1.2rem;
-            color: #495057;
-        }
+/* Headings & helpers */
+h3.mb-4{font-weight:700;color:var(--ink);letter-spacing:.2px;margin-bottom:1.25rem!important;} 
+.required:after{content:'*';color:#ef4444;margin-left:3px;} 
 
-        .bkash-icon {
-            background: #e2136e;
-            color: white;
-        }
+/* Inputs */
+.form-control,.form-select{height:44px;border:1px solid var(--hairline);border-radius:10px;background:var(--bg);color:var(--ink);transition:border-color .2s ease,box-shadow .2s ease,background .2s ease;} 
+.form-control:focus,.form-select:focus{border-color:var(--brand-600);box-shadow:0 0 0 .2rem rgba(154,0,0,.18);} 
+.form-control[readonly]{background:var(--bg-soft);} 
+.is-invalid,.form-control.is-invalid,.form-select.is-invalid{border-color:#ef4444!important;box-shadow:none;} 
+.invalid-feedback{font-size:.8rem;} 
 
-        .payment-details strong {
-            display: block;
-            font-size: 1rem;
-            color: #333;
-        }
+/* Payment methods wrapper */
+.payment-methods{border:1px solid var(--hairline);border-radius:14px;padding:1rem;background:var(--bg-soft);} 
+.payment-methods .form-check{margin:0;} 
+.form-check-input{position:absolute;opacity:0;pointer-events:none;} 
+.form-check-label{display:block;width:100%;} 
 
-        .payment-details p {
-            font-size: 0.85rem;
-            margin: 0;
-        }
+/* Payment tiles */
+.payment-option{display:flex;align-items:center;gap:12px;padding:.9rem;border:1px solid var(--hairline);border-radius:12px;background:var(--bg);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,background .18s ease;} 
+.payment-option:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(16,24,40,.10);} 
+.form-check-input:checked+.form-check-label .payment-option{border-color:rgba(154,0,0,.35);background:linear-gradient(180deg,rgba(154,0,0,.04),transparent);} 
 
-        .form-check-input:checked+.form-check-label .payment-option {
-            background: #f0f8ff;
-            border-radius: 8px;
-            padding: 0.75rem;
-            margin: -0.25rem -0.5rem;
-        }
+/* Payment icons */
+.payment-icon{width:44px;height:44px;border-radius:10px;background:linear-gradient(180deg,#f6f7f9,#eef1f6);display:flex;align-items:center;justify-content:center;margin:0;font-size:1.1rem;color:#495057;box-shadow:inset 0 1px 0 rgba(255,255,255,.6);} 
+.bkash-icon{background:#e2136e;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.25);} 
 
-        .bkash-payment-section {
-            margin-top: 1rem;
-            padding: 1rem;
-            border: 2px solid #e2136e;
-            border-radius: 8px;
-            background: #fef9fc;
-        }
+/* Payment details text */
+.payment-details strong{display:block;font-size:1rem;color:var(--ink);} 
+.payment-details p{font-size:.86rem;margin:0;color:var(--muted);} 
 
-        .bkash-payment-section .alert {
-            background: #e2136e;
-            color: white;
-            border: none;
-        }
+/* Selected tile aura */
+.form-check-input:checked+.form-check-label .payment-option::after{content:'';display:block;position:absolute;inset:-2px;border-radius:12px;pointer-events:none;border:2px solid rgba(154,0,0,.25);} 
 
-        .bkash-payment-section .form-control:focus {
-            border-color: #e2136e;
-            box-shadow: 0 0 0 0.2rem rgba(226, 19, 110, 0.25);
-        }
+/* bKash box */
+.bkash-payment-section{margin-top:1rem;padding:1rem;border:2px dashed #e2136e;border-radius:12px;background:linear-gradient(180deg,#fff7fb,#fff);} 
+.bkash-payment-section .alert{background:#e2136e;color:#fff;border:none;border-radius:10px;padding:.75rem 1rem;} 
+.bkash-payment-section .alert h6{margin:0 0 .5rem;font-weight:700;} 
+.bkash-payment-section ol{padding-left:1.1rem;margin:0;} 
+.bkash-payment-section .form-control:focus{border-color:#e2136e;box-shadow:0 0 0 .2rem rgba(226,19,110,.25);} 
+.form-text{color:var(--muted);} 
 
-        .card {
-            border: none;
-            border-radius: 10px;
-        }
+/* Order summary (sticky on desktop) */
+.col-lg-4 .card{position:sticky;top:24px;} 
+.card-title{font-weight:700;} 
+.border-top{border-top:1px solid var(--hairline)!important;} 
+hr{border-top:1px solid var(--hairline);} 
 
-        .form-control:focus,
-        .form-select:focus {
-            border-color: #80bdff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
-        }
+/* Buttons */
+.btn{border-radius:12px;font-weight:700;padding:.85rem 1rem;box-shadow:0 8px 20px rgba(154,0,0,.15);transition:transform .15s ease,box-shadow .15s ease,opacity .15s ease;} 
+.btn:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(154,0,0,.22);} 
+.btn:disabled{opacity:.7;box-shadow:none;} 
 
-        .form-control[readonly] {
-            background-color: #f8f9fa;
-        }
+/* Alerts (global tone) */
+.alert-info{background:linear-gradient(180deg,#f0f7ff,#eaf2ff);border:1px solid #cfe3ff;color:#0f3d87;border-radius:10px;} 
 
-        .required:after {
-            content: '*';
-            color: red;
-            margin-left: 3px;
-        }
+/* Mobile tweaks */
+@media(max-width:768px){.payment-option{flex-direction:column;align-items:flex-start;text-align:left;} .payment-icon{margin:0 0 .5rem 0;} .card .card-body{padding:1rem;} .col-lg-4 .card{position:static;}}
 
-        @media (max-width: 768px) {
-            .payment-option {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .payment-icon {
-                margin-right: 0;
-                margin-bottom: 0.5rem;
-            }
-        }
-    </style>
+/* Tiny polish on labels */
+label.form-label{font-weight:600;color:var(--ink);margin-bottom:.35rem;}
+</style>
 @endpush
+
 
 @section('contents')
     <div class="container py-5">
@@ -320,7 +288,7 @@
                             </div>
 
                             <div class="mt-4">
-                                <button type="submit" style="background-color: #c34ac1;" class="btn  w-100">
+                                <button type="submit" style="background-color: #9A0000;" class="btn  w-100">
                                     Place Order
                                 </button>
                             </div>
@@ -388,27 +356,27 @@
 @push('ecomjs')
     <script>
         // GTM tracking
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-            event: 'begin_checkout',
-            ecommerce: {
-                currency: 'BDT',
-                value: {{ $cartItems->sum(function($item) { return $item->price * $item->quantity; }) }},
-                items: [
-                    @foreach($cartItems as $item)
-                    {
-                        item_id: {{ $item->product->id }},
-                        item_name: '{{ $item->product->product_name }}',
-                        price: {{ $item->price }},
-                        quantity: {{ $item->quantity }},
-                        item_category: '{{ $item->product->category->name ?? "Uncategorized" }}',
-                        item_brand: '{{ $item->product->brand->name ?? "No Brand" }}',
-                        item_variant: '{{ ($item->variant->color->name ?? "") . " / " . ($item->variant->size->name ?? "") }}'
-                    }{{ !$loop->last ? ',' : '' }}
-                    @endforeach
-                ]
-            }
-        });
+        // window.dataLayer = window.dataLayer || [];
+        // window.dataLayer.push({
+        //     event: 'begin_checkout',
+        //     ecommerce: {
+        //         currency: 'BDT',
+        //         value: {{ $cartItems->sum(function($item) { return $item->price * $item->quantity; }) }},
+        //         items: [
+        //             @foreach($cartItems as $item)
+        //             {
+        //                 item_id: {{ $item->product->id }},
+        //                 item_name: '{{ $item->product->product_name }}',
+        //                 price: {{ $item->price }},
+        //                 quantity: {{ $item->quantity }},
+        //                 item_category: '{{ $item->product->category->name ?? "Uncategorized" }}',
+        //                 item_brand: '{{ $item->product->brand->name ?? "No Brand" }}',
+        //                 item_variant: '{{ ($item->variant->color->name ?? "") . " / " . ($item->variant->size->name ?? "") }}'
+        //             }{{ !$loop->last ? ',' : '' }}
+        //             @endforeach
+        //         ]
+        //     }
+        // });
 
         // Form validation and submission
         document.addEventListener('DOMContentLoaded', function() {

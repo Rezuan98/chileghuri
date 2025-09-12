@@ -19,9 +19,9 @@
     width: 100%; /* Ensure box takes full width of parent */
 }
 
-.new-arrival-box:hover {
+/* .new-arrival-box:hover {
     transform: translateY(-5px);
-}
+} */
 
 /* Image Styles */
 .new-arrival-image {
@@ -42,10 +42,10 @@
     transition: .7s ease;
 }
 
- .new-arrival-image:hover img {
+ /* .new-arrival-image:hover img {
 
    transform: scale(1.1);
-} 
+}  */
 
 .primary-image {
     opacity: 1;
@@ -149,15 +149,17 @@
     min-height: 36px; /* Adjust based on line-height */
     line-height: 1.5;
     white-space: normal;
+     font-family:"AloveraDisplay",sans-serif;font-weight:300;
 }
 .nap-product-price {
     width: 100%;
 }
 .nap-current-price {
     font-size: 14px;
-    font-weight: 800;
+    
     display: block; /* Stack prices vertically */
     width: 100%;
+     font-family:"AloveraDisplay",sans-serif;font-weight:300;
 }
 
 .original-product-price {

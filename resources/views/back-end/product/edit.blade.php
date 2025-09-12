@@ -103,14 +103,20 @@ Edit Product
                                   <div class="mb-3 row">
                                       <label class="col-sm-4 col-form-label">Subcategory</label>
                                       <div class="col-sm-8">
-                                          <select name="subcategory_id" id="subcategory" class="form-select form-control">
-                                              <option value="">Select Subcategory</option>
-                                              @foreach($subcategories as $subcategory)
-                                              <option value="{{ $subcategory->id }}" {{ $product->subcategory_id == $subcategory->id ? 'selected' : '' }}>
-                                                  {{ $subcategory->name }}
-                                              </option>
-                                              @endforeach
-                                          </select>
+                                          <select name="subcategory_id" id="subcategory" class="form-select form-control" required>
+    <option value="">Select Subcategory</option>
+    @foreach($subcategories as $subcategory)
+        <option value="{{ $subcategory->id }}" {{ $product->subcategory_id == $subcategory->id ? 'selected' : '' }}>
+            {{ $subcategory->name }}
+        </option>
+    @endforeach
+</select>
+ @error('subcategory_id')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+        @enderror
+
                                       </div>
                                   </div>
           
@@ -273,7 +279,8 @@ Edit Product
             
                     <div class="col-sm-12">
                         <label class="col-sm-12 col-form-label"> Product Description</label>
-                        <textarea id="summernote" name="description" class="form-control">{!! $product->description!!}</textarea>
+<div id="quill-editor" style="height: 300px;"></div>
+<textarea name="description" id="description" style="display:none;">{{ old('description') }}</textarea>
                     </div>
                 </div>
               </div>
@@ -402,10 +409,30 @@ Edit Product
         </form>
     </div>
 </div>
-
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 @endsection
 
 @push('admin-scripts')
+
+<script>
+var quill = new Quill('#quill-editor', {
+  theme: 'snow',
+  modules: {
+    toolbar: [
+      [{ 'header': [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      ['link', 'image'],
+      ['clean']
+    ]
+  }
+});
+
+// Sync content to textarea
+quill.on('text-change', function() {
+  document.getElementById('description').value = quill.root.innerHTML;
+});
+</script>
 <script>
 // Existing variant handling
 document.addEventListener('DOMContentLoaded', function() {
@@ -419,7 +446,7 @@ document.addEventListener('DOMContentLoaded', function() {
         newRow.innerHTML = `
             <div class="row">
                 <input type="hidden" name="variant_ids[]" value="">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <select name="colors[]" class="form-select form-control">
                         <option value="">Select Color</option>
                         @foreach($colors as $color)
@@ -427,7 +454,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <select name="sizes[]" class="form-select form-control">
                         <option value="">Select Size</option>
                         @foreach($sizes as $size)
@@ -435,12 +462,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <input type="number" name="stock_quantity[]" class="form-control" placeholder="Stock">
                 </div>
-                <div class="col-md-3">
-                    <input type="number" name="variant_price[]" class="form-control" step="0.01" placeholder="Price">
-                </div>
+                
                 <div class="col-md-1">
                     <button type="button" class="btn btn-danger btn-sm remove-variant">
                         <i class="fas fa-times"></i>

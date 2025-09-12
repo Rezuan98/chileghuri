@@ -78,6 +78,39 @@ class OrderManageController extends Controller
     }
 }
 
+// Add these methods to OrderManageController.php
+public function bulkUpdateStatus(Request $request)
+{
+    $request->validate([
+        'order_ids' => 'required|array',
+        'order_ids.*' => 'exists:orders,id',
+        'status' => 'required|in:pending,processing,shipped,delivered,cancelled'
+    ]);
 
+    Order::whereIn('id', $request->order_ids)
+          ->update(['order_status' => $request->status]);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Order statuses updated successfully'
+    ]);
+}
+
+public function bulkUpdatePayment(Request $request)
+{
+    $request->validate([
+        'order_ids' => 'required|array',
+        'order_ids.*' => 'exists:orders,id',
+        'payment_status' => 'required|in:pending,paid,failed'
+    ]);
+
+    Order::whereIn('id', $request->order_ids)
+          ->update(['payment_status' => $request->payment_status]);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Payment statuses updated successfully'
+    ]);
+}
     
 }

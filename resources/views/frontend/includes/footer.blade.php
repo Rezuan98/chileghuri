@@ -5,52 +5,86 @@
     </a>
 </div>
 
-<!-- Copyright Section -->
-<div class="copyright-section">
+<!-- Main Footer Section -->
+<footer class="chileghuri-main-footer">
     <div class="container">
-        <!-- Copyright Text -->
-        <div class="text-center mb-4">
-            <div class="copyright-text">
-                Copyright © {{ date('Y') }} {{ $settings->site_name ?? 'Chieghuri' }}, All Rights Reserved
-            </div>
-        </div>
-        
-        <!-- Logo and Tagline -->
-        <div class="text-center mb-4">
-            <div class="footer-brand">
-                <div class="brand-logo">
-                    <img src="{{ asset('storage/' . $settings->logo) }}" alt="{{ $settings->site_name ?? 'Logo'  }} }}" alt="chileghuri" class="footer-logo">
+        <div class="row">
+            <!-- Column 1: Know More -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="chileghuri-footer-column">
+                    <h5 class="chileghuri-footer-heading">Know More</h5>
+                    <ul class="chileghuri-footer-links">
+                       
+                        <li><a href="{{ route('returns.exchanges') }}">Refund & Return Policy</a></li>
+                        <li><a href="{{ route('terms.conditions') }}">Terms of Service</a></li>
+                        <li><a href="{{ route('privacy.policy') }}">Privacy Policy</a></li>
+                        <li><a href="/shipping-policy">Shipping Policy</a></li>
+                    </ul>
                 </div>
-                
+            </div>
+
+            <!-- Column 2: Support -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="chileghuri-footer-column">
+                    <h5 class="chileghuri-footer-heading">Support</h5>
+                    <ul class="chileghuri-footer-links">
+                        <li><a href="{{ route('contact.us') }}">Contact Us</a></li>
+                        <li><a href="#">About Us</a></li>
+                        
+                        <li><a href="#">FAQ</a></li>
+                       
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Column 3: Brand & Social -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="chileghuri-footer-column">
+                    <div class="chileghuri-footer-brand">
+                        <img src="{{ asset('storage/' . $settings->logo) }}" alt="{{ $settings->site_name ?? 'Chileghuri' }}" class="chileghuri-footer-logo mb-3">
+                        <p class="chileghuri-brand-description">
+                            {{ $settings->footer_description?? 'Chileghuri offers premium quality products with exceptional service. 
+                            Your trusted partner for authentic shopping experience in Bangladesh.' }}
+                        </p>
+                    </div>
+                    <div class="chileghuri-social-media">
+                        <h6 class="chileghuri-social-heading">Follow Us</h6>
+                        <div class="chileghuri-social-icons">
+                            <a href="{{ $settings->facebook_url }}" class="chileghuri-social-link chileghuri-facebook"><img style="height:40px;width:40px;" src="{{ asset('frontend/images/Fb.png') }}" alt=""></a>
+                            <a href="{{ $settings->instagram_url }}" class="chileghuri-social-link chileghuri-instagram"><img style="height:40px;width:40px;" src="{{ asset('frontend/images/Ig.png') }}" alt=""></a>
+                            <a href="{{ $settings->youtube_url }}" class="chileghuri-social-link chileghuri-tiktok"><img style="height:40px;width:40px;" src="{{ asset('frontend/images/Tt.png') }}" alt=""></a>
+                            <a href="{{ $settings->facebook_url }}" class="chileghuri-social-link chileghuri-twitter"><img style="height:40px;width:40px;" src="{{ asset('frontend/images/X.png') }}" alt=""></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 4: Payment Methods -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="chileghuri-footer-column">
+                    <h5 class="chileghuri-footer-heading">Payment Methods</h5>
+                    <div class="chileghuri-payment-methods">
+                        <img src="{{ asset('frontend/images/cod.jpg') }}" alt="Visa" class="chileghuri-payment-icon">
+                        <img src="{{ asset('frontend/images/bkash.jpg') }}" alt="bKash" class="chileghuri-payment-icon">
+                        <img src="{{ asset('frontend/images/nagad.png') }}" alt="Nagad" class="chileghuri-payment-icon">
+                        <img src="{{ asset('frontend/images/dbbl.jpg') }}" alt="DBBL" class="chileghuri-payment-icon">
+                        <img src="{{ asset('frontend/images/visa.png') }}" alt="Mastercard" class="chileghuri-payment-icon">
+                        <img src="{{ asset('frontend/images/rocket.png') }}" alt="Rocket" class="chileghuri-payment-icon">
+                    </div>
+                </div>
             </div>
         </div>
-        
-        <!-- Payment Icons -->
-        <div class="text-center mb-4">
-            <div class="payment-icons">
-                <img src="{{ asset('frontend/images/visa.png') }}" alt="Visa" class="payment-icon">
-                <img src="{{ asset('frontend/images/bkash.jpg') }}" alt="PayPal" class="payment-icon">
-                <img src="{{ asset('frontend/images/nagad.png') }}" alt="Discover" class="payment-icon">
-                <img src="{{ asset('frontend/images/dbbl.jpg') }}" alt="Mastercard" class="payment-icon">
-            </div>
-        </div>
-        
-        <!-- Bottom Links -->
+    </div>
+</footer>
+
+<!-- Copyright Section -->
+<div class="chileghuri-copyright-section">
+    <div class="container">
         <div class="text-center">
-            <div class="bottom-links">
-                <a href="{{ route('privacy.policy') }}">Privacy Policy</a>
-                <span class="separator">|</span>
-                <a href="{{ route('terms.conditions') }}">Terms & Conditions</a>
-                <span class="separator">|</span>
-                <a href="{{ route('returns.exchanges') }}">Return & Refund Policy</a>
+            <div class="chileghuri-copyright-text">
+                Copyright © {{ date('Y') }} {{ $settings->site_name ?? 'Chileghuri' }}, All Rights Reserved
             </div>
         </div>
     </div>
 </div>
 
-<style>
-.footer-logo {
-    filter: brightness(0) invert(1);
-}
-
-</style>
