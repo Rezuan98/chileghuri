@@ -29,9 +29,9 @@
                     <h5 class="chileghuri-footer-heading">Support</h5>
                     <ul class="chileghuri-footer-links">
                         <li><a href="{{ route('contact.us') }}">Contact Us</a></li>
-                        <li><a href="#">About Us</a></li>
+                        <li><a href="{{ route('about.us') }}">About Us</a></li>
                         
-                        <li><a href="#">FAQ</a></li>
+                        <li><a href="{{ route('faq') }}">FAQ</a></li>
                        
                     </ul>
                 </div>
@@ -51,8 +51,8 @@
                         <h6 class="chileghuri-social-heading">Follow Us</h6>
                         <div class="chileghuri-social-icons">
                             <a href="{{ $settings->facebook_url }}" class="chileghuri-social-link chileghuri-facebook"><img style="height:40px;width:40px;" src="{{ asset('frontend/images/Fb.png') }}" alt=""></a>
-                            <a href="{{ $settings->instagram_url }}" class="chileghuri-social-link chileghuri-instagram"><img style="height:40px;width:40px;" src="{{ asset('frontend/images/Ig.png') }}" alt=""></a>
-                            <a href="{{ $settings->youtube_url }}" class="chileghuri-social-link chileghuri-tiktok"><img style="height:40px;width:40px;" src="{{ asset('frontend/images/Tt.png') }}" alt=""></a>
+                            <a href="{{ $settings->instagram_url }}" class="chileghuri-social-link chileghuri-instagram"><img style="height:40px;width:40px;" src="{{ asset('frontend/images/IG.png') }}" alt=""></a>
+                            <a href="{{ $settings->youtube_url }}" class="chileghuri-social-link chileghuri-tiktok"><img style="height:40px;width:40px;" src="{{ asset('frontend/images/TT.png') }}" alt=""></a>
                             <a href="{{ $settings->facebook_url }}" class="chileghuri-social-link chileghuri-twitter"><img style="height:40px;width:40px;" src="{{ asset('frontend/images/X.png') }}" alt=""></a>
                         </div>
                     </div>
@@ -63,14 +63,21 @@
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="chileghuri-footer-column">
                     <h5 class="chileghuri-footer-heading">Payment Methods</h5>
-                    <div class="chileghuri-payment-methods">
+                    {{-- <div class="chileghuri-payment-methods">
                         <img src="{{ asset('frontend/images/cod.jpg') }}" alt="Visa" class="chileghuri-payment-icon">
                         <img src="{{ asset('frontend/images/bkash.jpg') }}" alt="bKash" class="chileghuri-payment-icon">
                         <img src="{{ asset('frontend/images/nagad.png') }}" alt="Nagad" class="chileghuri-payment-icon">
                         <img src="{{ asset('frontend/images/dbbl.jpg') }}" alt="DBBL" class="chileghuri-payment-icon">
                         <img src="{{ asset('frontend/images/visa.png') }}" alt="Mastercard" class="chileghuri-payment-icon">
                         <img src="{{ asset('frontend/images/rocket.png') }}" alt="Rocket" class="chileghuri-payment-icon">
-                    </div>
+
+                        <a target="_blank" href="https://www.sslcommerz.com/" title="SSLCommerz" alt="SSLCommerz"><img style="width:400px;height:300px;" src="https://securepay.sslcommerz.com/public/image/SSLCommerz-Pay-With-logo-All-Size-04.png" /></a>
+                    </div> --}}
+
+                    <div class="chileghuri-payment-methods">
+                        <img style="width: 300px;" src="{{ asset('frontend/images/paymen.png') }}" alt="">
+</div>
+
                 </div>
             </div>
         </div>

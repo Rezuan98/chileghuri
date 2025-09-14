@@ -105,4 +105,10 @@ class Order extends Model
                     $query->where('payment_status', $paymentStatus);
                 });
             }
+
+
+            public function payment()
+{
+    return $this->hasOne(Payment::class);
+}
 }

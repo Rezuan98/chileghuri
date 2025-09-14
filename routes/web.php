@@ -13,6 +13,7 @@ use App\Http\Controllers\Frontend\{
     ProductViewController,
     CartController,
     OrderController,
+    PaymentController,
     
     WishlistController,
     searchController,};
@@ -63,6 +64,7 @@ Route::get('/contact/us', [InfoController::class,'contactUs'])->name('contact.us
 Route::post('/messages',[MessageController::class, 'store'])->name('messages.store');
 
 Route::get('/about/us', [InfoController::class,'aboutUs'])->name('about.us');
+Route::get('/faq', [InfoController::class, 'faq'])->name('faq');
 
 
 
@@ -99,7 +101,11 @@ Route::get('/live-search', [searchController::class, 'liveSearch'])->name('live.
 Route::get('get-delivery-charges', [DeliveryChargeController::class, 'getDeliveryCharges'])->name('delivery-charges.getCharges');
 
 
-
+// Payment callback routes (these should be POST, not GET)
+Route::post('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
+Route::post('/payment/fail', [PaymentController::class, 'fail'])->name('payment.fail');
+Route::post('/payment/cancel', [PaymentController::class, 'cancel'])->name('payment.cancel');
+Route::post('/payment/ipn', [PaymentController::class, 'ipn'])->name('payment.ipn');
 
 
 Route::get('/privacy-policy', function () {

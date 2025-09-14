@@ -70,6 +70,16 @@ hr{border-top:1px solid var(--hairline);}
 
 /* Tiny polish on labels */
 label.form-label{font-weight:600;color:var(--ink);margin-bottom:.35rem;}
+.payment-methods input[type="radio"]{
+  appearance: auto !important;
+  -webkit-appearance: radio !important;
+  display: inline-block !important;
+  width: auto !important;
+  height: auto !important;
+  opacity: 1 !important;
+}
+.payment-methods label { cursor: pointer; }
+
 </style>
 @endpush
 
@@ -229,6 +239,49 @@ label.form-label{font-weight:600;color:var(--ink);margin-bottom:.35rem;}
                                             </label>
                                         </div>
                                     </div>
+
+
+
+
+
+
+
+{{-- <div class="payment-methods space-y-2">
+  <h5 class="font-semibold">Payment Method</h5>
+
+  <label for="cod" class="inline-flex items-center gap-2">
+    <input type="radio" name="payment_method" id="cod" value="cod" checked class="accent-black">
+    <span>Cash on Delivery</span>
+  </label>
+
+  <label for="sslcommerz" class="inline-flex items-center gap-2">
+    <input type="radio" name="payment_method" id="sslcommerz" value="sslcommerz" class="accent-black">
+    <span>Online Payment (Card/Mobile Banking)</span>
+  </label>
+
+  <label for="bkash" class="inline-flex items-center gap-2">
+    <input type="radio" name="payment_method" id="bkash" value="bkash" class="accent-black">
+    <span>Bkash</span>
+  </label>
+</div> --}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                                     <!-- Bkash Payment Fields -->
                                     <div id="bkash-fields" class="bkash-payment-section" 

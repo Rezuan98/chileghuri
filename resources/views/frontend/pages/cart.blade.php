@@ -145,7 +145,7 @@
     gap: 1rem;
     padding: 1rem 0;
     margin-top: 50px;
-    background-color: var(--primary-color);
+    background-color: #9A0000;
 }
 
 .cart-num-count {
@@ -268,7 +268,7 @@
 .remove-btn {
     background: none;
     border: none;
-    color: #dc3545;
+    color: #9A0000;
     font-size: 0.875rem;
     cursor: pointer;
     padding: 0.25rem 0.5rem;
@@ -278,7 +278,7 @@
 }
 
 .remove-btn:hover {
-    background: #dc3545;
+    background: #9A0000;
     color: white;
 }
 
@@ -452,7 +452,7 @@
 
 .checkout-btn {
     width: 100%;
-    background: #4F0808;
+    background: #9A0000;
     color: white;
     border: none;
     padding: 1rem;
@@ -466,7 +466,7 @@
 }
 
 .checkout-btn:hover {
-    background: #800000;
+    background: #4F0808;
     color: white;
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(154, 0, 0, 0.3);

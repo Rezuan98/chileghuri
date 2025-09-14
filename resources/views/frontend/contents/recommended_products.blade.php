@@ -143,11 +143,6 @@
     width: 100%;
 }
 
-.recommended-section-header .section-subtitle {
-    font-size: 1rem;
-    margin-bottom: 0;
-}
-
 .recommended-product-card {
     background: white;
     border-radius: 8px;

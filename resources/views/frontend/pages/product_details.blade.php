@@ -203,7 +203,7 @@
                     <!-- Color Selection -->
                     <div class="variant-box d-flex mx-1 ">
                         <div class="color-selection mb-4  " style="">
-                            <h6 class="mb-2" style="font-family: 'Jost', sans-serif;">COLOR</h6>
+                            <h6 class="mb-2" style="font-family: 'AloveraDisplay',sans-serif;">COLOR</h6>
                             <div class="color-options d-flex gap-2">
                                 @foreach ($product->variants->unique('color_id') as $variant)
                                     <div class="color-option {{ $loop->first ? 'active' : '' }}"
@@ -216,7 +216,7 @@
 
                         <!-- Size Selection -->
                         <div class="size-selection mb-2">
-                            <h6 class="mb-2" style="font-family: 'Jost', sans-serif;">SIZE</h6>
+                            <h6 class="mb-2" style="font-family: 'AloveraDisplay',sans-serif;">SIZE</h6>
                             <div class="size-options d-flex gap-2 flex-wrap">
                                 @foreach ($product->variants->unique('size_id') as $variant)
                                     <div class="size-option {{ $loop->first ? 'active' : '' }}"
@@ -416,8 +416,8 @@
     @if (isset($recommendedProducts) && $recommendedProducts->count() > 0)
         <section id="recommended-products-section" class="recommended-products">
             <div class="container mt-5">
-                <div class="section-header">
-                    <h2 class="section-title" style="text-align: center;">You May Also Like</h2>
+                <div class="recommended-section-header">
+                    <h2 class="recommended-section-title" >You May Also Like</h2>
 
                 </div>
 

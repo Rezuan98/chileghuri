@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\ProductVarient;
 use App\Models\OrderItem;
 use App\Models\DeliveryCharge;
+use App\Models\Payment;
 
 
 use Illuminate\Support\Facades\DB;
@@ -71,8 +72,7 @@ $deliveryCharge2 = DeliveryCharge::where('status', true)
 
 
 public function store(Request $request)
-{  
-    // Base validation rules
+{
     $validationRules = [
         'name' => 'required|string|max:255',
         'email' => 'required|email',
@@ -80,44 +80,32 @@ public function store(Request $request)
         'address' => 'required|string',
         'city' => 'required|string',
         'postal_code' => 'required|string',
-        'payment_method' => 'required|in:cod,bkash',
+        'payment_method' => 'required|in:cod,bkash,sslcommerz',
     ];
 
-    // Add conditional validation for Bkash
     if ($request->payment_method === 'bkash') {
         $validationRules['bkash_mobile'] = 'required|regex:/^01[3-9]\d{8}$/';
         $validationRules['bkash_transaction_id'] = 'required|string|max:20';
     }
 
-    $request->validate($validationRules, [
-        'bkash_mobile.required' => 'Bkash mobile number is required',
-        'bkash_mobile.regex' => 'Please enter a valid Bangladeshi mobile number (01XXXXXXXXX)',
-        'bkash_transaction_id.required' => 'Bkash transaction ID is required',
-    ]);
+    $request->validate($validationRules);
 
     try {
         DB::beginTransaction();
 
-        $uniqueSessionId = !Auth::check() ? uniqid('guest_', true) : null;
-
+        // Get cart items (same as your existing code)
         if (Auth::check()) {
-            $cartItems = Cart::where('user_id', Auth::id())
-                           ->with(['product', 'variant'])
-                           ->get();
+            $cartItems = Cart::where('user_id', Auth::id())->with(['product', 'variant'])->get();
         } else {
             $cart = session()->get('cart', []);
-            
             $cartItems = collect($cart)->map(function($item) {
-                $product = Product::with('variants')->find($item['product_id']);
-                $variant = ProductVarient::with(['color', 'size'])->find($item['varient_id']);
-                
                 return (object)[
                     'product_id' => $item['product_id'],
                     'varient_id' => $item['varient_id'],
                     'quantity' => $item['quantity'],
                     'price' => $item['price'],
-                    'product' => $product,
-                    'variant' => $variant
+                    'product' => Product::find($item['product_id']),
+                    'variant' => ProductVarient::find($item['varient_id'])
                 ];
             });
         }
@@ -130,36 +118,20 @@ public function store(Request $request)
             return $item->price * $item->quantity;
         });
         
-        $shipping = $request->city; // Gets delivery charge from form
-        $tax = 0;
+        $shipping = $request->city;
         $total = $subtotal + $shipping;
 
+        // Create order
         $order = new Order();
         $order->order_number = $this->generateOrderNumber();
-        
-        if (Auth::check()) {
-            $order->user_id = Auth::id();
-        } else {
-            $order->session_id = $uniqueSessionId;
-        }
-
+        $order->user_id = Auth::check() ? Auth::id() : null;
+        $order->session_id = !Auth::check() ? uniqid('guest_', true) : null;
         $order->subtotal = $subtotal;
         $order->shipping_charge = $shipping;
-        $order->tax = $tax;
+        $order->tax = 0;
         $order->total = $total;
         $order->payment_method = $request->payment_method;
-        
-        // FIXED: Set payment status for all payment methods
-        if ($request->payment_method === 'bkash') {
-            $order->payment_status = 'pending'; // You can change this to 'paid' if you want
-            // Use the correct column names from your migration
-            $order->bkash_mobile = $request->bkash_mobile;
-            $order->bkash_transaction_id = $request->bkash_transaction_id;
-            $order->transaction_id = $request->bkash_transaction_id; // Store transaction ID in the main field too
-        } else {
-            $order->payment_status = 'pending';
-        }
-        
+        $order->payment_status = 'pending';
         $order->order_status = 'pending';
         $order->name = $request->name;
         $order->email = $request->email;
@@ -168,12 +140,15 @@ public function store(Request $request)
         $order->city = $request->city;
         $order->postal_code = $request->postal_code;
         $order->order_notes = $request->order_notes;
-        
-        // Add debugging
-        \Log::info('About to save order:', $order->toArray());
-        
+
+        if ($request->payment_method === 'bkash') {
+            $order->bkash_mobile = $request->bkash_mobile;
+            $order->bkash_transaction_id = $request->bkash_transaction_id;
+        }
+
         $order->save();
 
+        // Create order items
         foreach ($cartItems as $item) {
             OrderItem::create([
                 'order_id' => $order->id,
@@ -185,35 +160,130 @@ public function store(Request $request)
                 'variant_color' => $item->variant->color->name ?? null,
                 'variant_size' => $item->variant->size->name ?? null
             ]);
-
-            // Check if variant exists before decrementing
-            if ($item->variant && $item->variant->stock_quantity >= $item->quantity) {
-                $item->variant->decrement('stock_quantity', $item->quantity);
-            }
-        }
-
-        if (Auth::check()) {
-            Cart::where('user_id', Auth::id())->delete();
-        } else {
-            session()->forget(['cart', 'delivery_location', 'guest_order']);
-            session()->flash('temp_order_number', $order->order_number);
         }
 
         DB::commit();
 
-        // Different success messages based on payment method
-        $successMessage = $request->payment_method === 'bkash' 
-            ? 'Order placed successfully! Your Bkash payment has been received.' 
-            : 'Order placed successfully!';
-
-        return redirect()->route('order.success', $order->order_number)
-                       ->with('success', $successMessage);
+        // Handle different payment methods
+        if ($request->payment_method === 'sslcommerz') {
+            return $this->initiateSSLCommerzPayment($order);
+        } else {
+            // For COD and Bkash - complete order immediately
+            $this->completeOrder($order);
+            return redirect()->route('order.success', $order->order_number)
+                           ->with('success', 'Order placed successfully!');
+        }
 
     } catch (\Exception $e) {
         DB::rollBack();
-        \Log::error('Order creation failed: ' . $e->getMessage());
-        \Log::error('Stack trace: ' . $e->getTraceAsString());
-        return redirect()->back()->with('error', 'Something went wrong! Please try again. Error: ' . $e->getMessage());
+        return redirect()->back()->with('error', 'Something went wrong! Please try again.');
+    }
+}
+
+private function initiateSSLCommerzPayment($order)
+{
+    $postData = [
+        'store_id' => config('sslcommerz.store_id'),
+        'store_passwd' => config('sslcommerz.store_password'),
+        'total_amount' => $order->total,
+        'currency' => 'BDT',
+        'tran_id' => $order->order_number,
+        'success_url' => url('/payment/success'), // Direct URL generation
+        'fail_url' => url('/payment/fail'),
+        'cancel_url' => url('/payment/cancel'),
+        'ipn_url' => url('/payment/ipn'),
+        'cus_name' => $order->name,
+        'cus_email' => $order->email,
+        'cus_add1' => $order->address,
+        'cus_city' => $order->city,
+        'cus_postcode' => $order->postal_code,
+        'cus_country' => 'Bangladesh',
+        'cus_phone' => $order->phone,
+        'ship_name' => $order->name,
+        'ship_add1' => $order->address,
+        'ship_city' => $order->city,
+        'ship_postcode' => $order->postal_code,
+        'ship_country' => 'Bangladesh',
+        'shipping_method' => 'YES',
+        'product_name' => 'Order #' . $order->order_number,
+        'product_category' => 'General',
+        'product_profile' => 'general',
+    ];
+
+    $url = config('sslcommerz.sandbox') 
+         ? 'https://sandbox.sslcommerz.com/gwprocess/v4/api.php'
+         : 'https://securepay.sslcommerz.com/gwprocess/v4/api.php';
+
+    // Debug the URLs being sent
+    \Log::info('SSLCommerz URLs:', [
+        'success_url' => $postData['success_url'],
+        'fail_url' => $postData['fail_url'],
+        'cancel_url' => $postData['cancel_url']
+    ]);
+
+    $handle = curl_init();
+    curl_setopt($handle, CURLOPT_URL, $url);
+    curl_setopt($handle, CURLOPT_TIMEOUT, 30);
+    curl_setopt($handle, CURLOPT_CONNECTTIMEOUT, 30);
+    curl_setopt($handle, CURLOPT_POST, 1);
+    curl_setopt($handle, CURLOPT_POSTFIELDS, $postData);
+    curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false);
+
+    $content = curl_exec($handle);
+    $code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+
+    if ($code == 200 && !curl_errno($handle)) {
+        curl_close($handle);
+        $sslcommerzResponse = json_decode($content, true);
+
+        // Debug the response
+        \Log::info('SSLCommerz Response:', $sslcommerzResponse);
+
+        if (isset($sslcommerzResponse['GatewayPageURL']) && $sslcommerzResponse['GatewayPageURL'] != "") {
+            Payment::create([
+                'order_id' => $order->id,
+                'payment_method' => 'sslcommerz',
+                'sslcommerz_session_id' => $sslcommerzResponse['sessionkey'],
+                'amount' => $order->total,
+                'currency' => 'BDT',
+                'status' => 'pending',
+                'gateway_response' => $sslcommerzResponse
+            ]);
+
+            return redirect($sslcommerzResponse['GatewayPageURL']);
+        } else {
+            \Log::error('SSLCommerz Error: No Gateway URL', $sslcommerzResponse);
+            return redirect()->route('cart.index')->with('error', 'Payment gateway error. Please try again.');
+        }
+    } else {
+        curl_close($handle);
+        \Log::error('SSLCommerz Connection Error', ['code' => $code, 'error' => curl_error($handle)]);
+        return redirect()->route('cart.index')->with('error', 'Connection error. Please try again.');
+    }
+}
+
+private function completeOrder($order)
+{
+    // Clear cart and update inventory
+    if (Auth::check()) {
+        $cartItems = Cart::where('user_id', Auth::id())->with('variant')->get();
+        foreach ($cartItems as $item) {
+            if ($item->variant && $item->variant->stock_quantity >= $item->quantity) {
+                $item->variant->decrement('stock_quantity', $item->quantity);
+            }
+        }
+        Cart::where('user_id', Auth::id())->delete();
+    } else {
+        $cart = session()->get('cart', []);
+        foreach ($cart as $item) {
+            $variant = ProductVarient::find($item['varient_id']);
+            if ($variant && $variant->stock_quantity >= $item['quantity']) {
+                $variant->decrement('stock_quantity', $item['quantity']);
+            }
+        }
+        session()->forget(['cart']);
+        session()->flash('temp_order_number', $order->order_number);
     }
 }
 
@@ -260,7 +330,7 @@ private function generateOrderNumber()
 
         $order = $order->firstOrFail();
         
-        return view('bac-kend.order.show', compact('order'));
+        return view('back-kend.order.show', compact('order'));
      }
 
     public function updatePaymentStatus(Request $request)
