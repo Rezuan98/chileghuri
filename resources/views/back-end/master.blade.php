@@ -459,12 +459,12 @@
                                         <p>Manage Product</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a href="{{ route('product.bulk.create') }}" class="nav-link {{ Request::is('product/create') ? 'active' : '' }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Bulk Import</p>
                                     </a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
                         <!-- product -->
@@ -546,7 +546,7 @@
                             </ul>
                         </li>
 
-
+{{-- 
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-cog"></i>
@@ -554,7 +554,7 @@
                                     Special Banner
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
-                            </a>
+                            </a> --}}
                             <ul class="nav nav-treeview">
 
                                 <li class="nav-item">
@@ -567,12 +567,12 @@
                             </ul>
                         </li>
 
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('secondary-banner.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-images"></i>
                                 <p>Secondary Banners</p>
                             </a>
-                        </li>
+                        </li> --}}
 
                         <li class="nav-item">
                             <a href="#" class="nav-link">
@@ -640,12 +640,12 @@
 
 <!-- Add this navigation item to your master.blade.php sidebar -->
 
-<li class="nav-item">
+{{-- <li class="nav-item">
     <a href="{{ route('popup.index') }}" class="nav-link {{ Request::is('popup*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-window-restore"></i>
         <p>Popup Management</p>
     </a>
-</li>
+</li> --}}
 
 <li class="nav-item">
     <a href="{{ route('review.index') }}" class="nav-link {{ Request::is('admin/review*') ? 'active' : '' }}">

@@ -48,6 +48,7 @@
                             <option value="">Select Location Type</option>
                             <option value="inside_dhaka" {{ old('location_type') == 'inside_dhaka' ? 'selected' : '' }}>Inside Dhaka</option>
                             <option value="outside_dhaka" {{ old('location_type') == 'outside_dhaka' ? 'selected' : '' }}>Outside Dhaka</option>
+                            <option value="inside_dhaka(urgent)" {{ old('location_type') == 'inside_dhaka(urgent)' ? 'selected' : '' }}>Inside Dhaka(Urgent)</option>
                         </select>
                         @error('location_type')
                             <span class="invalid-feedback">{{ $message }}</span>

@@ -210,7 +210,7 @@
     <!-- Filter Actions -->
     <div class="filter-actions">
         <button class="apply-btn" onclick="applyFilters()" id="applyFiltersBtn">
-            SEE {{ $product->total() }} RESULTS
+            SEE  RESULTS
         </button>
         <button class="clear-btn" onclick="clearAllFilters()">
             Clear All

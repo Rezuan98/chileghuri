@@ -145,7 +145,7 @@
     gap: 1rem;
     padding: 1rem 0;
     margin-top: 50px;
-    background-color: #9A0000;
+    background-color: var(--third-color);
 }
 
 .cart-num-count {
@@ -452,7 +452,7 @@
 
 .checkout-btn {
     width: 100%;
-    background: #9A0000;
+    background: var(--third-color);
     color: white;
     border: none;
     padding: 1rem;
@@ -466,10 +466,10 @@
 }
 
 .checkout-btn:hover {
-    background: #4F0808;
-    color: white;
+    background: var(--background-color);
+    color: var(--third-color);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(154, 0, 0, 0.3);
+    
 }
 
 /* Empty Cart */

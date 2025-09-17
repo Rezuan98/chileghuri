@@ -1,21 +1,12 @@
-/* Global Font Family */
-body {
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
+
 :root {
     --primary-color: #9A0000;
-    --secondary-color: #F0F0F0;
-    --accent-color: #FFCC00;
+    --secondary-color: #000;
+    --third-color: #423F3F;
+    --background-color: #FFFFFF;
+    --secondery-background-color: #E8E4DF;
 }
-/* Inherit font family for all elements */
-* {
-    font-family: inherit;
 
-}html{font-synthesis-weight:none;}
 
 
 
@@ -26,126 +17,26 @@ body {
 /* Conthic */
 @font-face { font-family:"Conthic"; src:url("/fonts/conthic/CookConthic.woff2") format("woff2"), url("/fonts/conthic/CookConthic.woff") format("woff"); font-weight:400; font-style:normal; font-display:swap; }
 
-/* Font weights with adjusted line heights */
-.font-light {
-    font-weight: 300;
-}
-
-.font-regular {
-    font-weight: 400;
-}
-
-.font-medium {
-    font-weight: 500;
-}
-
-.font-semibold {
-    font-weight: 600;
-}
-
-.font-bold {
-    font-weight: 700;
-}
-
-/* Form elements with adjusted sizes */
-button,
-input,
-select,
-textarea {
-    font-family: inherit;
-    font-size: inherit;
-}
 
-/* Adjusted sizes for common elements */
-h1, .h1 { font-size: 2.25rem; line-height: 1.2; }
-h2, .h2 { font-size: 1.875rem; line-height: 1.2; }
-h3, .h3 { font-size: 1.5rem; line-height: 1.2; }
-h4, .h4 { font-size: 1.25rem; line-height: 1.2; }
-h5, .h5 { font-size: 1.125rem; line-height: 1.2; }
-h6, .h6 { font-size: 1rem; line-height: 1.2; }
 
-/* Specific adjustments for Bootstrap components */
-.btn {
-    font-family: inherit;
-    letter-spacing: 0.01em;
-}
 
-.nav-link {
-    font-family: inherit;
-    font-size: 0.95rem;
-}
 
-.form-control {
-    font-family: inherit;
-    font-size: 0.95rem;
-}
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    body {
-        font-size: 13px;
-    }
-    
-    h1, .h1 { font-size: 2rem; }
-    h2, .h2 { font-size: 1.75rem; }
-    h3, .h3 { font-size: 1.375rem; }
-    h4, .h4 { font-size: 1.125rem; }
-    h5, .h5 { font-size: 1rem; }
-    h6, .h6 { font-size: 0.875rem; }
-}
-/* Ensure buttons maintain Poppins */
-button,
-input,
-select,
-textarea {
-    font-family: 'Poppins', sans-serif;
-}
 
-/* Override any potential third-party fonts */
-.btn,
-.form-control,
-.nav-link,
-.dropdown-item {
-    font-family: 'Poppins', sans-serif !important;
-}
 
 
 
 
 
-/* Slider Container */
 
 
-/* Slick Slider */
-.slick-slider {
-    width: 100%;
-    height:100%;
-}
 
-.slick-slide {
-    display: flex !important; 
-    justify-content: center;
-    align-items: center;
-    height: 400px;  
-}
 
-.slick-slide img {
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover;  
-}
 
-/* Mobile-Specific Adjustments */
-@media only screen and (max-width: 575px) {
-    .slick-slide img {
 
-        object-fit: cover; /* Prevent cropping on smaller screens */
-    }
-}
 
 
 
-/* css for banner slider end */
 
 
 
@@ -156,119 +47,6 @@ textarea {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* start style for amenities part */
-/* Icon styling */
-.home_delivery i,
-.trends i,
-.quality i,
-.caring_support i {
-    color: #6c757d; /* Muted gray color */
-}
-
-/* Centering content */
-.home_delivery,
-.trends,
-.quality,
-.caring_support {
-    padding: 20px 10px;
-    text-align: center;
-}
-
-h4 {
-    margin-top: 15px; /* Spacing between icon and title */
-    font-weight: 600; /* Bold text */
-}
-
-p {
-    font-size: 14px; /* Slightly smaller muted text */
-}
-
-/* end style for amenities part */
-
-.amenities {
-    background-color: #cc7fac;
-}
-
-
-/* General Side Menu Styles */
-.side-menu {
-    position: fixed;
-    top: 0;
-    right: -50%; /* Initially hidden outside of view */
-    width: 50%;
-    height: 100%;
-    background-color: #fff;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-    overflow-y: auto;
-    transition: right 0.5s ease; /* Smooth sliding effect */
-    padding: 20px;
-}
-@media (max-width:768px){
-
-    .side-menu{
-
-        right: -90%; /* Initially hidden outside of view */
-         width: 90%;
-    }
-}
-
-/* Close Button */
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 24px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #333;
-}
-
-/* Button Styles */
- .plus-btn {
-    position: absolute;
-    z-index: 999;
-    cursor: pointer;
-    border: none;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-   
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-
-.plus-btn {
-    bottom: 15px;
-    right: 15px;
-    width: 35px;
-    height: 35px;
-}
-
-/* Side Menu Active State */
-/* .side-menu.active {
-    right: 0; /* Slide into view 
-} */
 
 
 

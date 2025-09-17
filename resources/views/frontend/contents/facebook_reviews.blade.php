@@ -18,7 +18,7 @@
 .facebook-embed { width: 100%; height: 100%; border-radius: 8px; overflow: hidden; }
 .facebook-embed iframe { width: 100% !important; height: 300px !important; border: none; border-radius: 8px; }
 .reviews-slider .slick-prev, .reviews-slider .slick-next { position: absolute; top: 50%; transform: translateY(-50%); z-index: 100; width: 44px; height: 44px; border: none; border-radius: 50%; background: #2c2c2c; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(44, 44, 44, 0.3); transition: all 0.3s ease; font-size: 0; }
-.reviews-slider .slick-prev:hover, .reviews-slider .slick-next:hover { background: #4267B2; transform: translateY(-50%) scale(1.1); box-shadow: 0 6px 20px rgba(66, 103, 178, 0.4); }
+.reviews-slider .slick-prev:hover, .reviews-slider .slick-next:hover { background: var(--primary-color); transform: translateY(-50%) scale(1.1); box-shadow: 0 6px 20px rgba(66, 103, 178, 0.4); }
 .reviews-slider .slick-prev { left: -10px; }
 .reviews-slider .slick-next { right: -10px; }
 .reviews-slider .slick-prev:before, .reviews-slider .slick-next:before { display: none; }
@@ -43,7 +43,8 @@
     <div class="container-fluid">
         <div class="review-section-header">
             <h2 class="review-section-title">
-                <i class="fab fa-facebook"></i>
+                                           <img style="height:35px;width:35px;border-radius:25px;border:2px solid #FFFFFF" src="{{ asset('frontend/images/Fb.png') }}" alt="">
+
                 Customer Reviews
             </h2>
         </div>

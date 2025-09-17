@@ -62,10 +62,14 @@ $deliveryCharge2 = DeliveryCharge::where('status', true)
     ->where('location_type', 'outside_dhaka')
     ->first();
 
+    $deliveryCharge3 = DeliveryCharge::where('status', true)
+    ->where('location_type', 'inside_dhaka(urgent)')
+    ->first();
+
     // Get delivery location from session
     $delivery_location = session('delivery_location', 'inside');
 
-    return view('frontend.pages.shipping', compact('user', 'cartItems', 'delivery_location','deliveryCharge1','deliveryCharge2'));
+    return view('frontend.pages.shipping', compact('user', 'cartItems', 'delivery_location','deliveryCharge1','deliveryCharge2','deliveryCharge3'));
 }
 
  

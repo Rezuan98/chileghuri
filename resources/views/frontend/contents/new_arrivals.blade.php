@@ -100,13 +100,15 @@
                     {{-- Only show discount pricing if there's actually a discount --}}
                    @if($discount_amount > 0 && $final_price < $sale_price)
                                     <div class="fp-price-row d-flex justify-content-between">
-
-                                        <span class="fp-current-price">TK{{ $final_price }}</span>
+                                     <div class="first">
+                                        <span class="fp-current-price">Tk{{ $final_price }}</span>
                                         <span style="font-size: 10px;">({{ $product->variants_sum_stock_quantity }} Instock)</span>
-                                        <span class="original-product-price">TK{{ $sale_price }}</span>
+                                     </div>
+                                        
+                                        <span class="original-product-price">Tk{{ $sale_price }}</span>
                                     </div>
                                     @else
-                                    <span class="fp-current-price">TK{{ $sale_price }}</span>
+                                    <span class="fp-current-price">Tk{{ $sale_price }}</span>
                                     <span style="font-size: 10px;">({{ $product->variants_sum_stock_quantity }} Instock)</span>
                                     @endif
                 </div>

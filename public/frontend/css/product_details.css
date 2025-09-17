@@ -1,6 +1,6 @@
 /* Base Styles */
 html, body { overflow-x: hidden; }
-:root { --primary-color: #4F0808; }
+
 
 /* Product Info Container */
 .product-info { padding-left: 40px; padding-top: 10px; }

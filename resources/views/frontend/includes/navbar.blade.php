@@ -50,40 +50,15 @@ use App\Models\Cart;
                             </li>
                         @endforeach
 
-                        {{-- @if($brands->count() > 0)
-                        <li class="category-item">
-                            <a href="#" class="has-dropdown">Brands</a>
-                            <div class="subcategory-dropdown">
-                                <div class="mega-inner">
-                                    <ul>
-                                        @foreach ($brands as $brand)
-                                            <li>
-                                                <a href="{{ route('brand.products', $brand->id) }}">{{ $brand->name }}</a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-                        @endif --}}
+                        
                     </ul>
                 </div>
 
-                <!-- Social Icons -->
-                {{-- <div class="col-lg-3 col-md-3 d-flex justify-content-end align-items-center">
-                    <div class="social-icons d-none d-lg-flex me-3">
-                        <a href="{{ $settings->facebook_url }}" class="social-link">
-                            <i class="fa-brands fa-facebook" aria-hidden="true"></i>
-                        </a>
-                        <a href="{{ $settings->instagram_url }}" class="social-link">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    </div>
-                </div> --}}
+                
 
                 <!-- Search -->
-                <div class="col-lg-1 col-md-1">
-                    <div class="search-container">
+                <div class="col-lg-1 col-md-1 " style="">
+                    <div class="search-container d-flex " style="margin-top: 9px;">
                         <input type="text" class="search-input" placeholder="Search" id="desktop-search">
                         <img style="height:20px;" src="{{ asset('frontend/images/search.png') }}" alt="">
                         <ul id="desktop-search-results" class="search-results"></ul>
@@ -91,8 +66,8 @@ use App\Models\Cart;
                 </div>
                 
                 <!-- User & Cart Icons -->
-                <div class="col-lg-1 col-md-1">
-                    <div class="d-flex justify-content-end align-items-center">
+                <div class="col-lg-1 col-md-1" style="padding: 0px!important;">
+                    <div class="d-flex justify-content-start align-items-center">
                         <div class="nav-icons d-flex align-items-center">
                             <div class="position-relative">
                                 <a href="#" class="nav-icon user-icon">
@@ -118,14 +93,7 @@ use App\Models\Cart;
                                     </ul>
                                 </div>
                             </div>
-                            <a href="#" class="nav-icon cart-icon" onclick="toggleCart(); return false;">
-                               <img style="height:25px;" src="{{ asset('frontend/images/like.png') }}" alt="">
-
-                                {{-- <span class="cart-count">{{ auth()->check() ? 
-                                    Cart::where('user_id', auth()->id())->sum('quantity') : 
-                                    collect(session('cart', []))->sum('quantity') 
-                                }}</span> --}}
-                            </a>
+                           
                             <a href="#" class="nav-icon cart-icon" onclick="toggleCart(); return false;">
                                 <img style="height:25px;" src="{{ asset('frontend/images/market.png') }}" alt="">
 
@@ -176,7 +144,7 @@ use App\Models\Cart;
                             @auth
                                 <li><a href="{{ route('user.dashboard') }}">Profile</a></li>
                                 <li><a href="{{ route('user.dashboard') }}">Orders</a></li>
-                                <li><a href="{{ route('user.wishlist') }}">Wishlist</a></li>
+                                {{-- <li><a href="{{ route('user.wishlist') }}">Wishlist</a></li> --}}
                                 <li>
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
@@ -304,7 +272,7 @@ use App\Models\Cart;
     <div class="cart-footer">
         <div class="cart-subtotal">
             <span>Subtotal:</span>
-            <span id="cart-subtotal-amount">৳0.00</span>
+            <span id="cart-subtotal-amount">Tk0.00</span>
         </div>
         <div class="cart-buttons">
             <a href="{{ route('cart.index') }}" class="view-cart-btn">View Cart</a>
@@ -478,7 +446,7 @@ function setupSearch(inputId, resultsId) {
                                     >
                                     <div>
                                         <a href="/product/details/${product.id}" style="text-decoration: none; font-weight: bold; color: #4f0808;">${product.product_name}</a>
-                                        <div style="color: #4f0808; font-size: 14px;">Price: ৳${product.sale_price}</div>
+                                        <div style="color: #4f0808; font-size: 14px;">Price: Tk${product.sale_price}</div>
                                     </div>
                                 </div>
                             `;
@@ -553,7 +521,7 @@ function updateCartSidebar() {
                                 <div class="cart-item-details">
                                     <h6 class="cart-item-title">${productName}</h6>
                                     <p class="cart-item-variant">${variantSize}-${variantColor}</p>
-                                    <div class="cart-item-price">৳${price.toFixed(2)}</div>
+                                    <div class="cart-item-price">Tk${price.toFixed(2)}</div>
                                     <div class="cart-item-actions">
                                         <div class="quantity-controls">
                                             <button onclick="updateSidebarQuantity('${item.id}', 'decrease')">-</button>
@@ -570,7 +538,7 @@ function updateCartSidebar() {
                     });
 
                     // Update subtotal and show footer
-                    cartSubtotalElement.textContent = `৳${data.subtotal.toFixed(2)}`;
+                    cartSubtotalElement.textContent = `Tk${data.subtotal.toFixed(2)}`;
                     cartFooter.style.display = 'block';
                 } else {
                     // Show empty cart message
@@ -579,7 +547,7 @@ function updateCartSidebar() {
                             <i class="fas fa-shopping-cart"></i>
                             <p>Your cart is empty</p>
                         </div>`;
-                    cartSubtotalElement.textContent = '৳0.00';
+                    cartSubtotalElement.textContent = 'Tk0.00';
                     cartFooter.style.display = 'none';
                 }
             }
@@ -691,14 +659,14 @@ function updateCartSubtotal() {
     let subtotal = 0;
     document.querySelectorAll('.cart-item').forEach(item => {
         const priceText = item.querySelector('.cart-item-price').textContent;
-        const price = parseFloat(priceText.replace('৳', '').replace(',', ''));
+        const price = parseFloat(priceText.replace('Tk', '').replace(',', ''));
         const quantity = parseInt(item.querySelector('.sidebar-quantity').textContent);
         subtotal += price * quantity;
     });
 
     const subtotalElement = document.getElementById('cart-subtotal-amount');
     if (subtotalElement) {
-        subtotalElement.textContent = '৳' + subtotal.toFixed(2);
+        subtotalElement.textContent = 'Tk' + subtotal.toFixed(2);
     }
 }
 

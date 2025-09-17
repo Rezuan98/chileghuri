@@ -78,7 +78,7 @@
 
     .service-tag {
         display: inline-block;
-        background: #4f0808;
+        background: #9A0000;
         color: white;
         padding: 8px 16px;
         border-radius: 20px;
@@ -115,11 +115,11 @@
     }
 
     .order-btn:hover {
-        background: #4f0808;
+        background: #9A0000;
         color: white;
-        border-color: #4f0808;
+        border-color: #9A0000;
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(79, 8, 8, 0.3);
+        box-shadow: 0 8px 25px rgba(178, 11, 11, 0.3);
     }
 
     .delivery-visual {

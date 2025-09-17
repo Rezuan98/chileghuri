@@ -50,11 +50,11 @@
 
         .fp-current-price {
             font-weight: 700;
-            color: #4F0808;
+            color: #9A0000;
            font-family:"AloveraDisplay",sans-serif;font-weight:300;       }
 
         .original-product-price {
-            color: #4F0808;
+            color: #9A0000;
             text-decoration: line-through;
             font-size: 0.9em;
             margin-left: 5px;
@@ -165,7 +165,7 @@
     position: absolute;
     top: 20px;
     left: -40px;
-    background: #4F0808;
+    background: #9A0000;
     color: #f5f5f5;
     font-weight: bold;
     font-size: 14px;

@@ -1,8 +1,8 @@
 /* Main Footer */
 .chileghuri-main-footer {
-    background-color: #9A0000;
+    background-color: var(--secondery-background-color);
     padding: 60px 0 40px;
-    color: #ccc;
+    color: var(--third-color);
 }
 
 .chileghuri-footer-column {
@@ -10,16 +10,16 @@
 }
 
 .chileghuri-footer-heading {
-    color: #fff;
+    color: var(--third-color);
     font-size: 18px;
     font-family:"Conthic", sans-serif; font-weight:400;
     margin-bottom: 25px;
     padding-bottom: 10px;
-    border-bottom: 2px solid #fff;
+    border-bottom: 3px solid #423F3F; 
     position: relative;
 }
 
-.chileghuri-footer-heading::after {
+/* .chileghuri-footer-heading::after {
     content: '';
     position: absolute;
     bottom: -2px;
@@ -27,7 +27,7 @@
     width: 50px;
     height: 2px;
     background-color: #fff;
-}
+} */
 
 /* Footer Links */
 .chileghuri-footer-links {
@@ -41,7 +41,7 @@
 }
 
 .chileghuri-footer-links a {
-    color: #ccc;
+    color: var(--third-color);
     text-decoration: none;
     font-size: 14px;
     transition: all 0.3s ease;
@@ -50,7 +50,7 @@
 }
 
 .chileghuri-footer-links a:hover {
-    color: #fff;
+    color: var(--primary-color);
     padding-left: 5px;
 }
 
@@ -62,20 +62,21 @@
 .chileghuri-footer-logo {
     max-height: 70px;
     width: auto;
-    filter: brightness(0) invert(1);
+    filter: brightness(0) ;
 }
 
 .chileghuri-brand-description {
     font-size: 14px;
     line-height: 1.6;
-    color: #ccc;
+    color: var(--third-color);;
     margin-top: 15px;
-     font-family:"AloveraDisplay",sans-serif;font-weight:300;
+     font-family:"AloveraDisplay",sans-serif;
+     font-weight:300;
 }
 
 /* Social Media */
 .chileghuri-social-heading {
-    color: #fff;
+    color: var(--third-color);
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 15px;
@@ -96,44 +97,18 @@
     justify-content: center;
     text-decoration: none;
     transition: all 0.3s ease;
-    border: 2px solid #ccc;
+   
 }
 
-.chileghuri-social-link.chileghuri-facebook {
-    color: #3b5998;
-    /* border-color: #3b5998; */
-}
 
-.chileghuri-social-link.chileghuri-instagram {
-    color: #e4405f;
-    /* border-color: #e4405f; */
-}
-
-.chileghuri-social-link.chileghuri-tiktok {
-    color: #000;
-    /* border-color: #000; */
-    /* background-color: #fff; */
-}
-
-.chileghuri-social-link.chileghuri-twitter {
-    color: #000;
-    /* border-color: #000; */
-    /* background-color: #fff; */
-}
 
 .chileghuri-social-link:hover {
     background-color: currentColor;
-    color: #fff;
+    color: var(--primary-color);
     
 }
 
-.chileghuri-social-link.chileghuri-tiktok img:hover,
-.chileghuri-social-link.chileghuri-twitter img:hover,
-.chileghuri-social-link.chileghuri-facebook img:hover ,
-.chileghuri-social-link.chileghuri-instagram img:hover{
-    
-    opacity: .7;
-}
+
 
 /* Payment Methods */
 .chileghuri-payment-methods {

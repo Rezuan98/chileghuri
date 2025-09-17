@@ -3,83 +3,91 @@
 
 @push('ecomcss')
 <style>
-:root{--brand-600:#9A0000;--brand-700:#4f0808;--ink:#0f172a;--muted:#6b7280;--hairline:#e6e8ef;--bg:#ffffff;--bg-soft:#fafafa;--shadow:0 8px 24px rgba(16,24,40,.08);} @media(prefers-color-scheme:dark){:root{--ink:#f3f4f6;--muted:#a1a1aa;--hairline:#2a2a2a;--bg:#0b0b0b;--bg-soft:#0f0f0f;--shadow:0 8px 24px rgba(0,0,0,.35);}}
+
+/* CSS Variables */
+:root {
+    --third-color: #423F3F;
+    --bg: #ffffff;
+    --bg-soft: #f8f9fa;
+    --ink: #212529;
+    --muted: #6c757d;
+    --hairline: #dee2e6;
+    --shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
 
 /* Page layout & cards */
-.card{border:1px solid var(--hairline);border-radius:14px;box-shadow:var(--shadow);background:var(--bg);} 
-.card .card-body{padding:1.25rem 1.25rem;} 
-.container.py-5{scroll-margin-top:24px;} 
+.card { border-radius: 14px; box-shadow: var(--shadow); background: var(--bg); border: 1px solid var(--third-color); }
+.card .card-body { padding: 1.25rem 1.25rem; }
+.container.py-5 { scroll-margin-top: 24px; }
 
 /* Headings & helpers */
-h3.mb-4{font-weight:700;color:var(--ink);letter-spacing:.2px;margin-bottom:1.25rem!important;} 
-.required:after{content:'*';color:#ef4444;margin-left:3px;} 
+h3.mb-4 { font-weight: 700; color: var(--ink); letter-spacing: .2px; margin-bottom: 1.25rem!important; }
+.required:after { content: '*'; color: #ef4444; margin-left: 3px; }
 
 /* Inputs */
-.form-control,.form-select{height:44px;border:1px solid var(--hairline);border-radius:10px;background:var(--bg);color:var(--ink);transition:border-color .2s ease,box-shadow .2s ease,background .2s ease;} 
-.form-control:focus,.form-select:focus{border-color:var(--brand-600);box-shadow:0 0 0 .2rem rgba(154,0,0,.18);} 
-.form-control[readonly]{background:var(--bg-soft);} 
-.is-invalid,.form-control.is-invalid,.form-select.is-invalid{border-color:#ef4444!important;box-shadow:none;} 
-.invalid-feedback{font-size:.8rem;} 
+.form-control, .form-select { height: 44px; border-radius: 10px; background: var(--bg); color: var(--ink);  }
+.form-control[readonly] { background: var(--bg-soft); }
+.invalid-feedback { font-size: .8rem; }
 
 /* Payment methods wrapper */
-.payment-methods{border:1px solid var(--hairline);border-radius:14px;padding:1rem;background:var(--bg-soft);} 
-.payment-methods .form-check{margin:0;} 
-.form-check-input{position:absolute;opacity:0;pointer-events:none;} 
-.form-check-label{display:block;width:100%;} 
+.payment-methods { border-radius: 14px; padding: 1rem; background: var(--bg-soft); border: 1px solid var(--third-color); }
+.payment-methods .form-check { margin: 0; }
+.form-check-input { position: absolute; opacity: 0; pointer-events: none; }
+.form-check-label { display: block; width: 100%; }
 
 /* Payment tiles */
-.payment-option{display:flex;align-items:center;gap:12px;padding:.9rem;border:1px solid var(--hairline);border-radius:12px;background:var(--bg);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,background .18s ease;} 
-.payment-option:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(16,24,40,.10);} 
-.form-check-input:checked+.form-check-label .payment-option{border-color:rgba(154,0,0,.35);background:linear-gradient(180deg,rgba(154,0,0,.04),transparent);} 
+.payment-option { display: flex; align-items: center; gap: 12px; padding: .9rem; border-radius: 12px; background: var(--bg); transition: transform .18s ease,box-shadow .18s ease,border-color .18s ease,background .18s ease; border: 1px solid var(--third-color); }
+
+.form-check-input:checked+.form-check-label .payment-option { background: linear-gradient(180deg,rgba(154,0,0,.04),transparent); border-color: var(--third-color); }
 
 /* Payment icons */
-.payment-icon{width:44px;height:44px;border-radius:10px;background:linear-gradient(180deg,#f6f7f9,#eef1f6);display:flex;align-items:center;justify-content:center;margin:0;font-size:1.1rem;color:#495057;box-shadow:inset 0 1px 0 rgba(255,255,255,.6);} 
-.bkash-icon{background:#e2136e;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.25);} 
+.payment-icon { width: 44px; height: 44px; border-radius: 10px; background: linear-gradient(180deg,#f6f7f9,#eef1f6); display: flex; align-items: center; justify-content: center; margin: 0; font-size: 1.1rem; color: #495057; box-shadow: inset 0 1px 0 rgba(255,255,255,.6); }
+.bkash-icon { background: #FFFFFF; color: #fff; box-shadow: inset 0 1px 0 rgba(255,255,255,.25); }
 
 /* Payment details text */
-.payment-details strong{display:block;font-size:1rem;color:var(--ink);} 
-.payment-details p{font-size:.86rem;margin:0;color:var(--muted);} 
+.payment-details strong { display: block; font-size: 1rem; color: var(--ink); }
+.payment-details p { font-size: .86rem; margin: 0; color: var(--muted); }
 
 /* Selected tile aura */
-.form-check-input:checked+.form-check-label .payment-option::after{content:'';display:block;position:absolute;inset:-2px;border-radius:12px;pointer-events:none;border:2px solid rgba(154,0,0,.25);} 
+.form-check-input:checked+.form-check-label .payment-option::after { content: ''; display: block; position: absolute; inset: -2px; border-radius: 12px; pointer-events: none; border: 2px solid var(--third-color); }
 
 /* bKash box */
-.bkash-payment-section{margin-top:1rem;padding:1rem;border:2px dashed #e2136e;border-radius:12px;background:linear-gradient(180deg,#fff7fb,#fff);} 
-.bkash-payment-section .alert{background:#e2136e;color:#fff;border:none;border-radius:10px;padding:.75rem 1rem;} 
-.bkash-payment-section .alert h6{margin:0 0 .5rem;font-weight:700;} 
-.bkash-payment-section ol{padding-left:1.1rem;margin:0;} 
-.bkash-payment-section .form-control:focus{border-color:#e2136e;box-shadow:0 0 0 .2rem rgba(226,19,110,.25);} 
-.form-text{color:var(--muted);} 
+.bkash-payment-section { margin-top: 1rem; padding: 1rem; border: 2px dashed var(--third-color); border-radius: 12px; }
+.bkash-payment-section .alert { background: #FFFFFF; color: #e2136e; border: 1px solid var(--third-color); border-radius: 10px; padding: .75rem 1rem; }
+.bkash-payment-section .alert h6 { margin: 0 0 .5rem; font-weight: 700; }
+.bkash-payment-section ol { padding-left: 1.1rem; margin: 0; }
+.form-text { color: var(--muted); }
 
 /* Order summary (sticky on desktop) */
-.col-lg-4 .card{position:sticky;top:24px;} 
-.card-title{font-weight:700;} 
-.border-top{border-top:1px solid var(--hairline)!important;} 
-hr{border-top:1px solid var(--hairline);} 
+.col-lg-4 .card { position: sticky; top: 24px; }
+.card-title { font-weight: 700; }
+.border-top { border-top: 1px solid var(--third-color)!important; }
+hr { border-top: 1px solid var(--third-color); }
 
 /* Buttons */
-.btn{border-radius:12px;font-weight:700;padding:.85rem 1rem;box-shadow:0 8px 20px rgba(154,0,0,.15);transition:transform .15s ease,box-shadow .15s ease,opacity .15s ease;} 
-.btn:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(154,0,0,.22);} 
-.btn:disabled{opacity:.7;box-shadow:none;} 
+.btn { border-radius: 12px; font-weight: 700; padding: .85rem 1rem; border: 1px solid var(--third-color); }
+
+.btn:disabled { opacity: .7; box-shadow: none; }
 
 /* Alerts (global tone) */
-.alert-info{background:linear-gradient(180deg,#f0f7ff,#eaf2ff);border:1px solid #cfe3ff;color:#0f3d87;border-radius:10px;} 
+.alert-info { background: var(--seconder-background); border: 1px solid var(--third-color); color: #0f3d87; border-radius: 10px; }
 
 /* Mobile tweaks */
-@media(max-width:768px){.payment-option{flex-direction:column;align-items:flex-start;text-align:left;} .payment-icon{margin:0 0 .5rem 0;} .card .card-body{padding:1rem;} .col-lg-4 .card{position:static;}}
+@media(max-width:768px) {
+    .payment-option { flex-direction: column; align-items: flex-start; text-align: left; }
+    .payment-icon { margin: 0 0 .5rem 0; }
+    .card .card-body { padding: 1rem; }
+    .col-lg-4 .card { position: static; }
+}
 
 /* Tiny polish on labels */
-label.form-label{font-weight:600;color:var(--ink);margin-bottom:.35rem;}
-.payment-methods input[type="radio"]{
-  appearance: auto !important;
-  -webkit-appearance: radio !important;
-  display: inline-block !important;
-  width: auto !important;
-  height: auto !important;
-  opacity: 1 !important;
-}
+label.form-label { font-weight: 600; color: var(--ink); margin-bottom: .35rem; }
+.payment-methods input[type="radio"] { appearance: auto !important; -webkit-appearance: radio !important; display: inline-block !important; width: auto !important; height: auto !important; opacity: 1 !important; }
 .payment-methods label { cursor: pointer; }
-
+.login-button {background: var(--third-color);color: var(--background-color);}
+.login-button:hover{ background: var(--background-color);color:var(--third-color);}
+.login-section { border: 1px solid var(--ink);padding: 20px;background:var(--secondery-background-color);border-radius:10px;}
+.login-section p {}
 </style>
 @endpush
 
@@ -89,10 +97,10 @@ label.form-label{font-weight:600;color:var(--ink);margin-bottom:.35rem;}
         <div class="row">
             <div class="col-lg-8">
                 @if (!Auth::check())
-                    <div class="alert alert-info mb-4">
+                    <div class="login-section mb-4">
                         <div class="d-flex justify-content-between align-items-center">
-                            <span>Already have an account?</span>
-                            <a href="{{ route('user.login') }}" class="btn btn-sm btn-primary">Login</a>
+                            <p>Already have an account?</p>
+                            <a href="{{ route('user.login') }}" class="btn btn-sm login-button">Login</a>
                         </div>
                     </div>
                 @endif
@@ -169,6 +177,9 @@ label.form-label{font-weight:600;color:var(--ink);margin-bottom:.35rem;}
                                             {{ old('city') == ($deliveryCharge2->charge ?? '110') ? 'selected' : '' }}>
                                             Outside Dhaka (৳{{ $deliveryCharge2->charge ?? '110' }})
                                         </option>
+                                        <option value="200" {{ old('city') == '200' ? 'selected' : '' }}>
+    Inside Dhaka(Urgent) (৳200)
+</option>
                                     </select>
                                     @error('city')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -229,7 +240,7 @@ label.form-label{font-weight:600;color:var(--ink);margin-bottom:.35rem;}
                                                 <div class="payment-option">
                                                     <div class="payment-icon bkash-icon">
                                                         <img src="{{ asset('frontend/images/bkashlogo.svg') }}"
-                                                            alt="Bkash" style="width: 30px; height: 30px;">
+                                                            alt="Bkash" style="width: 55px; height: 55px;">
                                                     </div>
                                                     <div class="payment-details">
                                                         <strong>Bkash</strong>
@@ -341,7 +352,7 @@ label.form-label{font-weight:600;color:var(--ink);margin-bottom:.35rem;}
                             </div>
 
                             <div class="mt-4">
-                                <button type="submit" style="background-color: #9A0000;" class="btn  w-100">
+                                <button type="submit" style="background-color:var(--third-color); color:var(--background-color);" class="btn  w-100">
                                     Place Order
                                 </button>
                             </div>
@@ -384,20 +395,19 @@ label.form-label{font-weight:600;color:var(--ink);margin-bottom:.35rem;}
                                     2,
                                 ) }}</span>
                             </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>Shipping</span>
-                                <span id="shippingCost">৳{{ number_format($deliveryCharge1->charge ?? 70, 2) }}</span>
-                            </div>
+                          <div class="d-flex justify-content-between mb-2">
+    <span>Shipping</span>
+    <span id="shippingCost">৳<span id="shipping-amount">{{ number_format($deliveryCharge1->charge ?? 70, 2) }}</span></span>
+</div>
 
-                            <hr>
-                            <div class="d-flex justify-content-between">
-                                <strong>Total</strong>
-                                <strong id="orderTotal">৳{{ number_format(
-                                    $cartItems->sum(function ($item) {
-                                        return $item->price * $item->quantity;
-                                    }) + ($deliveryCharge1->charge ?? 70),
-                                ) }}</strong>
-                            </div>
+<div class="d-flex justify-content-between">
+    <strong>Total</strong>
+    <strong id="orderTotal">৳<span id="total-display">{{ number_format(
+        $cartItems->sum(function ($item) {
+            return $item->price * $item->quantity;
+        }) + ($deliveryCharge1->charge ?? 70), 2
+    ) }}</span></strong>
+</div>
                         </div>
                     </div>
                 </div>
@@ -510,28 +520,27 @@ label.form-label{font-weight:600;color:var(--ink);margin-bottom:.35rem;}
             }
         }
 
-        function updateTotalAmount() {
-            const subtotal = parseFloat({{ $cartItems->sum(function($item) { return $item->price * $item->quantity; }) }});
-            const shipping = parseFloat(document.getElementById('deliveryLocation').value);
-            const total = subtotal + shipping;
-            
-            // Update amount in the DOM
-            document.getElementById('total-amount').textContent = total.toFixed(2);
-            
-            console.log('Total amount updated:', total);
-        }
+       function updateTotalAmount() {
+    const subtotal = parseFloat({{ $cartItems->sum(function($item) { return $item->price * $item->quantity; }) }});
+    const shipping = parseFloat(document.getElementById('deliveryLocation').value);
+    const total = subtotal + shipping;
+    
+    // Update amount in the DOM
+    document.getElementById('total-amount').textContent = total.toFixed(2);
+}
 
         // Delivery location change handler
-        document.getElementById('deliveryLocation').addEventListener('change', function() {
-            const shippingCost = parseFloat(this.value);
-            const subtotal = parseFloat({{ $cartItems->sum(function($item) { return $item->price * $item->quantity; }) }});
-            const total = subtotal + shippingCost;
+      document.getElementById('deliveryLocation').addEventListener('change', function() {
+    const shippingCost = parseFloat(this.value);
+    const subtotal = parseFloat({{ $cartItems->sum(function($item) { return $item->price * $item->quantity; }) }});
+    const total = subtotal + shippingCost;
 
-            document.getElementById('shippingCost').textContent = '৳' + shippingCost.toFixed(2);
-            document.getElementById('orderTotal').textContent = '৳' + total.toFixed(2);
+    // Update both shipping and total displays
+    document.getElementById('shipping-amount').textContent = shippingCost.toFixed(2);
+    document.getElementById('total-display').textContent = total.toFixed(2);
 
-            // Also update Bkash total amount
-            updateTotalAmount();
-        });
+    // Also update Bkash total amount
+    updateTotalAmount();
+});
     </script>
 @endpush

@@ -21,13 +21,13 @@
 
         $description = strip_tags(Str::limit($product->description ?? '', 100));
         $priceText = $discount_amount > 0 && $final_price < $sale_price
-            ? 'Price: ৳' . number_format($final_price, 0) . ' (was ৳' . number_format($sale_price, 0) . ')'
-            : 'Price: ৳' . number_format($final_price, 0);
+            ? 'Price: Tk' . number_format($final_price, 0) . ' (was Tk' . number_format($sale_price, 0) . ')'
+            : 'Price: Tk' . number_format($final_price, 0);
         $fullDescription = $description . ' | ' . $priceText;
     @endphp
 
     <!-- Basic Open Graph Tags -->
-    <meta property="og:title" content="{{ $product->product_name }} - ৳{{ number_format($final_price, 0) }}">
+    <meta property="og:title" content="{{ $product->product_name }} - Tk{{ number_format($final_price, 0) }}">
     <meta property="og:description" content="{{ $fullDescription }}">
     <meta property="og:image" content="{{ url('uploads/products/' . $product->product_image) }}">
     <meta property="og:image:secure_url" content="{{ secure_url('uploads/products/' . $product->product_image) }}">
@@ -54,7 +54,7 @@
 
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $product->product_name }} - ৳{{ number_format($final_price, 0) }}">
+    <meta name="twitter:title" content="{{ $product->product_name }} - Tk{{ number_format($final_price, 0) }}">
     <meta name="twitter:description" content="{{ $fullDescription }}">
     <meta name="twitter:image" content="{{ url('uploads/products/' . $product->product_image) }}">
 @endpush
@@ -182,18 +182,18 @@
                 <div class="product-price mb-4">
                     {{-- Only show discount pricing if there's actually a discount --}}
                     @if ($discount_amount > 0 && $final_price < $sale_price)
-                        <span class="current-price h3">TK{{ number_format($final_price, 2) }}</span>
+                        <span class="current-price h3">Tk{{ number_format($final_price, 2) }}</span>
                         <span
-                            class="original-price text-muted text-decoration-line-through ms-2">৳{{ number_format($sale_price, 2) }}</span>
+                            class="original-price text-muted text-decoration-line-through ms-2">Tk{{ number_format($sale_price, 2) }}</span>
                         <span class="text-danger ms-2">
                             @if ($discount_type == 'percentage')
                                 ({{ $discount_amount }}% Off)
                             @else
-                                (৳{{ $discount_amount }} Off)
+                                (Tk{{ $discount_amount }} Off)
                             @endif
                         </span>
                     @else
-                        <span class="current-price h3">TK{{ number_format($sale_price, 2) }}</span>
+                        <span class="current-price h3">Tk{{ number_format($sale_price, 2) }}</span>
                     @endif
                 </div>
 
@@ -273,16 +273,16 @@
                         }
 
                         // Create share text with price
-                        $shareTitle = $product->product_name . ' - ৳' . number_format($final_price, 2);
+                        $shareTitle = $product->product_name . ' - Tk' . number_format($final_price, 2);
                         $shareText =
                             $discount_amount > 0 && $final_price < $sale_price
                                 ? $product->product_name .
-                                    ' now only ৳' .
+                                    ' now only Tk' .
                                     number_format($final_price, 2) .
-                                    ' (was ৳' .
+                                    ' (was Tk' .
                                     number_format($sale_price, 2) .
                                     ') '
-                                : $product->product_name . ' - ৳' . number_format($final_price, 2);
+                                : $product->product_name . ' - Tk' . number_format($final_price, 2);
 
                         $fullShareText = $shareText . ' | Shop now: ' . url()->current();
                     @endphp
@@ -303,26 +303,40 @@
                         <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}&quote={{ urlencode($shareTitle . ' | ' . strip_tags(Str::limit($product->description ?? '', 100))) }}"
                             target="_blank" class="social-share-btn facebook"
                             onclick="window.open(this.href, 'facebook-share','width=580,height=296'); return false;">
-                            <i class="fab fa-facebook-f"></i>
+                            <img style="height:40px;width:40px;" src="{{ asset('frontend/images/Fb.png') }}" alt="">
                         </a>
+
+
+
+
+ {{-- <a href="{{ $settings->facebook_url }}" class="chileghuri-social-link chileghuri-facebook"><img style="height:40px;width:40px;" src="{{ asset('frontend/images/Fb.png') }}" alt=""></a>
+                            <a href="{{ $settings->instagram_url }}" class="chileghuri-social-link chileghuri-instagram"><img style="height:40px;width:40px;" src="{{ asset('frontend/images/IG.png') }}" alt=""></a>
+                            <a href="{{ $settings->youtube_url }}" class="chileghuri-social-link chileghuri-tiktok"><img style="height:40px;width:40px;" src="{{ asset('frontend/images/TT.png') }}" alt=""></a>
+                            <a href="{{ $settings->facebook_url }}" class="chileghuri-social-link chileghuri-twitter"><img style="height:40px;width:40px;" src="{{ asset('frontend/images/X.png') }}" alt=""></a> --}}
+
+
+
+
+
+
 
                         <!-- Instagram -->
                         <a href="https://www.instagram.com/" target="_blank" class="social-share-btn instagram"
                             title="Share on Instagram (copy: {{ $shareText }})">
-                            <i class="fa-brands fa-square-instagram"></i>
+                            <img style="height:40px;width:40px;" src="{{ asset('frontend/images/IG.png') }}" alt="">
                         </a>
 
                         <!-- WhatsApp with price and emojis -->
                         <a href="https://api.whatsapp.com/send?text={{ urlencode('🛍️ Check out this amazing product! ' . $fullShareText . ' 🔥') }}"
                             target="_blank" class="social-share-btn whatsapp">
-                            <i class="fab fa-whatsapp"></i>
+                            <img style="height:40px;width:40px;" src="{{ asset('frontend/images/whatsapp.png') }}" alt="">
                         </a>
 
                         <!-- Twitter with price and hashtags -->
                         <a href="https://twitter.com/intent/tweet?text={{ urlencode($shareText . ' #Shopping #Deals') }}&url={{ urlencode(url()->current()) }}"
                             target="_blank" class="social-share-btn twitter"
                             onclick="window.open(this.href, 'twitter-share', 'width=580,height=296'); return false;">
-                            <i class="fa-brands fa-x-twitter"></i>
+                            <img style="height:40px;width:40px;" src="{{ asset('frontend/images/X.png') }}" alt="">
                         </a>
 
                         <!-- Email with detailed price info -->
@@ -476,11 +490,11 @@
                                                 {{-- Only show discount pricing if there's actually a discount --}}
                                                 @if ($discount_amount > 0 && $final_price < $sale_price)
                                                     <div class="rp-price-row d-flex">
-                                                        <span class="rp-current-price">৳{{ $final_price }}</span>
-                                                        <span class="original-product-price">৳{{ $sale_price }}</span>
+                                                        <span class="rp-current-price">Tk{{ $final_price }}</span>
+                                                        <span class="original-product-price">Tk{{ $sale_price }}</span>
                                                     </div>
                                                 @else
-                                                    <span class="rp-current-price">৳{{ $sale_price }}</span>
+                                                    <span class="rp-current-price">Tk{{ $sale_price }}</span>
                                                 @endif
                                             </div>
                                         </div>
