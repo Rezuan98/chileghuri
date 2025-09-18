@@ -39,18 +39,27 @@
                         <i class="fas fa-tachometer-alt me-2"></i>Dashboard
                     </a>
 
-                    <a href="#addresses" class="list-group-item list-group-item-action" data-bs-toggle="list">
+                    {{-- <a href="#addresses" class="list-group-item list-group-item-action" data-bs-toggle="list">
                         <i class="fas fa-map-marker-alt me-2"></i>Addresses
-                    </a>
+                    </a> --}}
                     <a href="#account" class="list-group-item list-group-item-action" data-bs-toggle="list">
                         <i class="fas fa-user me-2"></i>Account Details
                     </a>
                     <a href="#changepassword" class="list-group-item list-group-item-action" data-bs-toggle="list">
                         <i class="fas fa-key me-2"></i>Change Password
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action text-danger">
-                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                    <a href="{{ route('logout') }}" class="list-group-item list-group-item-action text-danger">
+                       <form method="POST" action="{{ route('logout') }}" class="m-0">
+    @csrf
+    <button type="submit"
+            class="list-group-item list-group-item-action text-danger w-100 text-start">
+        <i class="fas fa-sign-out-alt me-2"></i> Logout
+    </button>
+</form>
+
                     </a>
+
+             
                 </div>
             </div>
         </div>
@@ -176,7 +185,7 @@
                                         <label class="form-label">Profile Image</label>
                                         <div class="d-flex align-items-center gap-3">
                                             <img id="imagePreview" src="{{ !empty($user->image) 
-                                                     ? asset('storage/userimages/' . $user->image)
+                                                     ? asset('storage/' . $user->image)
                                                      : asset('frontend/images/defaultuser.png') }}" alt="Profile Picture" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
                                             <div>
                                                 <input type="file" class="form-control @error('image') is-invalid @enderror" name="image" id="image" accept="image/*" onchange="previewImage(this)">

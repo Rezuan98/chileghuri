@@ -104,7 +104,7 @@
                                     {{ ucfirst($order->order_status) }}
                                 </span>
                             </td>
-                            <td>৳{{ number_format($order->total, 2) }}</td>
+                            <td>Tk{{ number_format($order->total, 2) }}</td>
                             <td>
                                 <a href="{{ route('user.orders.show', $order->id) }}" class="btn btn-sm btn-outline-primary">View</a>
                             </td>

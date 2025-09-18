@@ -53,8 +53,8 @@
                             <tr>
                                 <td>{{ $item->product->name }}</td>
                                 <td>{{ $item->quantity }}</td>
-                                <td>৳{{ number_format($item->price, 2) }}</td>
-                                <td>৳{{ number_format($item->price * $item->quantity, 2) }}</td>
+                                <td>Tk{{ number_format($item->price, 2) }}</td>
+                                <td>Tk{{ number_format($item->price * $item->quantity, 2) }}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -64,15 +64,15 @@
                     <ul class="list-group">
                         <li class="list-group-item d-flex justify-content-between">
                             <span>Subtotal:</span>
-                            <strong>৳{{ number_format($order->subtotal, 2) }}</strong>
+                            <strong>Tk{{ number_format($order->subtotal, 2) }}</strong>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
                             <span>Shipping:</span>
-                            <strong>৳{{ number_format($order->shipping_cost, 2) }}</strong>
+                            <strong>Tk{{ number_format($order->shipping_cost, 2) }}</strong>
                         </li>
                         <li class="list-group-item d-flex justify-content-between bg-light">
                             <span class="fw-bold">Total:</span>
-                            <strong>৳{{ number_format($order->total, 2) }}</strong>
+                            <strong>Tk{{ number_format($order->total, 2) }}</strong>
                         </li>
                     </ul>
                     @if ($order->order_status === 'pending')

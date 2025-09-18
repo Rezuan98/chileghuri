@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Order;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -142,5 +143,37 @@ public function showOrder($id)
     }
     
  
+
+
+
+public function changePasswordForm()
+    {
+        return view('back-end.users.admin_change_password');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => ['required', 'confirmed', Password::min(8)],
+        ]);
+
+        $user = Auth::user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->with('error', 'Current password is incorrect');
+        }
+
+        $user->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        return back()->with('success', 'Password changed successfully!');
+    }
+
+
+
+
+
 
 }

@@ -82,10 +82,10 @@ All Users
       <div class="card-header">
           <h4 class="card-title aaa">
             Manage Unit
-             <a href="" class="add_new_btn btn btn-sm btn-primary">
+             {{-- <a href="" class="add_new_btn btn btn-sm btn-primary">
               <i class="fa fa-plus"></i>
                 Add New
-              </a>
+              </a> --}}
           </h4>
       </div>
 
@@ -111,7 +111,7 @@ All Users
                                 <td>
                                     <img src="{{ !empty($items->image) 
                                         ? asset('storage/' . $items->image)
-                                        : asset('/public/frontend/images/defaultuser.png') }}"
+                                        : asset('frontend/images/default.jpg') }}"
                                         alt="Profile Picture"
                                         class="rounded-circle"
                                         style="width: 50px; height: 50px; object-fit: cover;">
@@ -167,9 +167,9 @@ All Users
                                         <i class="fa fa-ellipsis-v"></i>
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="">
+                                        {{-- <a class="dropdown-item" href="">
                                             <i class="fa fa-edit"></i> Edit
-                                        </a>
+                                        </a> --}}
                                         <a class="dropdown-item" href="{{ route('delete.users',$items->id) }}">
                                             <i class="fa fa-trash"></i> Delete
                                         </a>

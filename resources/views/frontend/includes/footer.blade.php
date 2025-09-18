@@ -32,6 +32,7 @@
                         <li><a href="{{ route('about.us') }}">About Us</a></li>
                         
                         <li><a href="{{ route('faq') }}">FAQ</a></li>
+                        <li><a href="{{ route('admin.dashboard') }}">Admin Dashboard</a></li>
                        
                     </ul>
                 </div>

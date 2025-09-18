@@ -43,7 +43,7 @@
                         @endif
                     </a>
 
-                    @if ($products->variants->isNotEmpty())
+                    @if ($products->total_stock > 0)
                         <button
                             onclick="addToCartFromCategory(
                 event,
@@ -58,7 +58,12 @@
                             class="cat-plus-btn" title="Add to Cart">
                             <i class="fas fa-plus"></i>
                         </button>
-                    @endif
+                    @else
+                    <button class="cat-plus-btn" title="Add to Cart">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        @endif
+
                 </div>
 
                 <div class="cat-product-info">

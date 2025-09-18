@@ -154,6 +154,7 @@
         <!-- Product Info -->
         <div class="col-lg-6 col-md-5 col-sm-6">
             <div class="product-info">
+                <span class="text-muted">{{ config('app.name') }}</span>
                 <h1 class="product-details-title mb-3">{{ $product->product_name ?? 'NO Name' }}</h1>
 
                 <?php

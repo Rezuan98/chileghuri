@@ -154,17 +154,11 @@
                         </div>
 
                         <div class="d-grid gap-2">
-                            <button type="submit" style="background-color: #9a0000; color:#fff;" class="btn btn-lg">
+                            <button type="submit" style="background-color: var(--third-color); color:#fff;" class="btn btn-lg">
                                 Login
                             </button>
                         </div>
-                        <div class="col-12 col-sm-6 text-sm-end">
-                            @if (Route::has('password.request'))
-                                <a href="{{ route('password.request') }}" class="text-decoration-none small">
-                                    Forgot Password?
-                                </a>
-                            @endif
-                        </div>
+                        
                         <div class="text-center mt-4">
                             <p class="mb-0 mt-2">
                                 Don't have an account? 
