@@ -75,7 +75,7 @@
         <!-- LEFT: always current price + stock -->
         <div class="price-left d-flex align-items-baseline gap-2">
             <span class="fp-current-price">
-                ৳{{ number_format(($discount_amount > 0 && $final_price < $sale_price) ? $final_price : $sale_price, 0) }}
+                Tk{{ number_format(($discount_amount > 0 && $final_price < $sale_price) ? $final_price : $sale_price, 0) }}
             </span>
             <span style="font-size: 10px;" class="stock small text-muted">({{ $products->total_stock }} in stock)</span>
         </div>
@@ -84,7 +84,7 @@
         @if ($discount_amount > 0 && $final_price < $sale_price)
             <div class="price-right">
                 <span class="original-product-price text-muted text-decoration-line-through">
-                    ৳{{ number_format($sale_price, 0) }}
+                    Tk{{ number_format($sale_price, 0) }}
                 </span>
             </div>
         @endif

@@ -54,7 +54,7 @@
                                     @if($discount_type === 'percentage')
                                         {{ $discount_amount }}% OFF
                                     @else
-                                        ৳{{ $discount_amount }} OFF
+                                        Tk{{ $discount_amount }} OFF
                                     @endif
                                 </span>
                             @endif
@@ -88,10 +88,10 @@
                             
                             <div class="product-price">
                                 @if($discount_amount > 0)
-                                    <span class="current-price">৳{{ number_format($final_price, 0) }}</span>
-                                    <span class="original-price">৳{{ number_format($sale_price, 0) }}</span>
+                                    <span class="current-price">Tk{{ number_format($final_price, 0) }}</span>
+                                    <span class="original-price">Tk{{ number_format($sale_price, 0) }}</span>
                                 @else
-                                    <span class="current-price">৳{{ number_format($sale_price, 0) }}</span>
+                                    <span class="current-price">Tk{{ number_format($sale_price, 0) }}</span>
                                 @endif
                             </div>
                             
