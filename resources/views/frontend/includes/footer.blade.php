@@ -44,7 +44,7 @@
                     <div class="chileghuri-footer-brand">
                         <img src="{{ asset('storage/' . $settings->logo) }}" alt="{{ $settings->site_name ?? 'Chileghuri' }}" class="chileghuri-footer-logo mb-3">
                         <p class="chileghuri-brand-description">
-                            {{ $settings->footer_description?? 'Chileghuri offers premium quality products with exceptional service. 
+                            {{ $settings->footer_description?? 'RevEnComm offers premium quality products with exceptional service. 
                             Your trusted partner for authentic shopping experience in Bangladesh.' }}
                         </p>
                     </div>
@@ -90,7 +90,7 @@
     <div class="container">
         <div class="text-center">
             <div class="chileghuri-copyright-text">
-                Copyright © {{ date('Y') }} {{ $settings->site_name ?? 'Chileghuri' }}, All Rights Reserved
+                Copyright © {{ date('Y') }} {{ $settings->site_name ?? 'RevEnComm' }}, All Rights Reserved
             </div>
         </div>
     </div>

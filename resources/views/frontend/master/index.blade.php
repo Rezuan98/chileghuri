@@ -1,6 +1,6 @@
 @extends('frontend.master.master')
 
-@section('keyTitle','Chileghuri')
+@section('keyTitle','Home|revencomm')
 
 @section('contents')
 {{-- @include('frontend.contents.popup')  --}}
