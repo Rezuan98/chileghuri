@@ -3,7 +3,7 @@
     <div class="loader-content">
         <div class="spinner-logo">
             <!-- Replace with your actual logo -->
-            <img src="{{ asset('frontend/images/logo.png') }}" alt="Loading..." class="logo-spin">
+            <img src="{{ asset('storage/' . $settings->logo) }}" alt="Loading..." class="logo-spin">
         </div>
         <div class="loader-text">Loading...</div>
     </div>
