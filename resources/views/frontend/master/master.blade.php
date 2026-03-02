@@ -89,7 +89,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <section id="main-area">
         @yield('contents')
     </section>
-@include('frontend.components.loader')
+{{-- @include('frontend.components.loader') --}}
     @include('frontend.includes.footer')
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -109,20 +109,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <script src="{{ asset('frontend/js/cart.js') }}"></script>
     <script src="{{ asset('frontend/js/product_details.js') }}"></script>
 
-<script>// Show loader
-function showLoader() {
-    document.getElementById('ldrsLoader').style.display = 'block';
-}
-
-// Hide loader
-function hideLoader() {
-    document.getElementById('ldrsLoader').style.display = 'none';
-}
-
-// Auto hide on page load
-window.addEventListener('load', function() {
-    hideLoader();
-});</script>
 
     {{-- //////////////////elevate zoom js start///////////////////////////// --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.3/jquery.elevatezoom.min.js"></script>
